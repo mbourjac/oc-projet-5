@@ -32,9 +32,9 @@ function setProductInformation(productData) {
     productDescription.textContent = productData.description;
 }
 
-function appendProductOptions(productData) {
+function appendProductOptions({ colors }) {
     const productColors = document.querySelector("#colors");
-    const productColorsData = productData.colors;
+    const productColorsData = colors;
 
     for (let productColorData of productColorsData) {
         const productOption = createProductOption(productColorData);

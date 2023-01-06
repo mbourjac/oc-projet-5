@@ -1,8 +1,8 @@
-export function createProductImage(productData) {
+export function createProductImage({ imageUrl, altTxt }) {
     const productImage = document.createElement("img");
 
-    productImage.src = productData.imageUrl;
-    productImage.alt = productData.altTxt;
+    productImage.src = imageUrl;
+    productImage.alt = altTxt;
 
     return productImage;
 }

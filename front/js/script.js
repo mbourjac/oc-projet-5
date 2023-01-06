@@ -35,20 +35,20 @@ function createProductArticle(productData) {
     return productArticle;
 }
 
-function createProductTitle(productData) {
+function createProductTitle({ name }) {
     const productTitle = document.createElement("h3");
 
     productTitle.classList.add("productName");
-    productTitle.textContent = productData.name;
+    productTitle.textContent = name;
 
     return productTitle;
 }
 
-function createProductDescription(productData) {
+function createProductDescription({ description }) {
     const productDescription = document.createElement("p");
 
     productDescription.classList.add("productDescription");
-    productDescription.textContent = productData.description;
+    productDescription.textContent = description;
 
     return productDescription;
 }
