@@ -10,7 +10,7 @@ async function createDynamicProducts() {
         const productsContainer = document.querySelector(".items");
         const productCard = createProductCard(productData);
 
-        productsContainer.appendChild(productCard);
+        productsContainer.append(productCard);
     }
 }
 
