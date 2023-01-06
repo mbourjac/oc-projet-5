@@ -35,12 +35,9 @@ function setProductInformation(productData) {
 function appendProductOptions({ colors }) {
     const productColors = document.querySelector("#colors");
     const productColorsData = colors;
+    const productOptions = productColorsData.map(createProductOption);
 
-    for (let productColorData of productColorsData) {
-        const productOption = createProductOption(productColorData);
-
-        productColors.append(productOption);
-    }
+    productColors.append(...productOptions);
 }
 
 function createProductOption(productColorData) {
