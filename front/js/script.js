@@ -6,7 +6,7 @@ createDynamicProducts();
 async function createDynamicProducts() {
     const productsData = await getData("http://localhost:3000/api/products");
 
-    for (let productData of productsData) {
+    for (const productData of productsData) {
         const productsContainer = document.querySelector(".items");
         const productCard = createProductCard(productData);
 
