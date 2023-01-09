@@ -4,8 +4,8 @@ import { createProductImage } from "./modules/create-product-image.js";
 createDynamicProduct();
 
 async function createDynamicProduct() {
-    const fetchPath = generateFetchPath();
-    const productData = await getData(fetchPath);
+    const productId = getProductId();
+    const productData = await getData(productId);
 
     const productContainer = document.querySelector(".item__img");
     const productImage = createProductImage(productData);
@@ -15,11 +15,10 @@ async function createDynamicProduct() {
     appendProductOptions(productData);    
 }
 
-function generateFetchPath() {
+function getProductId() {
     const currentUrl = new URL(document.location);
-    const productId = currentUrl.searchParams.get("id");
 
-    return `http://localhost:3000/api/products/${productId}`;
+    return currentUrl.searchParams.get("id");
 }
 
 function setProductInformation(productData) {

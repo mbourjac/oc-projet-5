@@ -4,7 +4,7 @@ import { createProductImage } from "./modules/create-product-image.js";
 createDynamicProducts();
 
 async function createDynamicProducts() {
-    const productsData = await getData("http://localhost:3000/api/products");
+    const productsData = await getData();
 
     for (const productData of productsData) {
         const productsContainer = document.querySelector(".items");
