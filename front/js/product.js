@@ -12,7 +12,7 @@ async function createDynamicProduct() {
     const productContainer = document.querySelector(".item__img");
     const productImage = createProductImage(productData);
     productContainer.append(productImage);
-    
+
     setProductInformation(productData);
     appendProductOptions(productData);
 
@@ -77,7 +77,7 @@ function createStorageObject(productId) {
 
         productQuantity.addEventListener("change", function () {
             let updatedQuantity = +this.value;
-    
+
             switch (true) {
                 case updatedQuantity > 100:
                     alert("Veuillez choisir une quantité inférieure à 100");
@@ -102,8 +102,8 @@ function handleCartButton(storageObject) {
     const cartButton = document.querySelector("#addToCart");
 
     cartButton.addEventListener("click", function () {
-        switch(true) {
-            case (storageObject.color === "") && (storageObject.quantity === 0):
+        switch (true) {
+            case storageObject.color === "" && storageObject.quantity === 0:
                 alert("Veuillez choisir une couleur et renseigner la quantité");
                 break;
             case storageObject.color === "":
@@ -120,14 +120,18 @@ function handleCartButton(storageObject) {
 }
 
 function addToCart(storageObject) {
-    const storedProducts = getStorageData();  
-    
+    const storedProducts = getStorageData();
+
     if (storedProducts.length === 0) {
         storedProducts.push(storageObject);
     } else {
         for (const [index, storedProduct] of storedProducts.entries()) {
-            if (storedProduct.id === storageObject.id && storedProduct.color === storageObject.color) {
-                storedProduct.quantity = storedProduct.quantity + storageObject.quantity;
+            if (
+                storedProduct.id === storageObject.id &&
+                storedProduct.color === storageObject.color
+            ) {
+                storedProduct.quantity =
+                    storedProduct.quantity + storageObject.quantity;
                 break;
             }
 
