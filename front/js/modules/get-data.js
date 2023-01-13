@@ -19,11 +19,11 @@ export async function getData(endpoint) {
 function setFullPath(endpoint) {
     const basePath = "http://localhost:3000/api/products";
 
-    if (endpoint) {
-        return basePath + "/" + endpoint;
+    if (!endpoint) {
+        return basePath;
     }
 
-    return basePath;
+    return basePath + "/" + endpoint;
 }
 
 function redirectToHomepage() {
