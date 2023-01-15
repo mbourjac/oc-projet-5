@@ -1,5 +1,6 @@
 import { getData } from "./modules/get-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
+import { createProductElement } from "./modules/create-product-element.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
 import { setApiPath } from "./modules/set-api-path.js";
@@ -57,39 +58,16 @@ function createProductContent(productData, color, quantity) {
 }
 
 function createProductDescription(productData, color) {
+    const { name, price } = productData;
     const productDescription = document.createElement("div");
-    const productName = createProductName(productData);
-    const productColor = createProductColor(color);
-    const productPrice = createProductPrice(productData);
+    const productName = createProductElement("h2", name);
+    const productColor = createProductElement("p", color);
+    const productPrice = createProductElement("p", `${price} €`);
 
     productDescription.classList.add("cart__item__content__description");
     productDescription.append(productName, productColor, productPrice);
 
     return productDescription;
-}
-
-function createProductName({ name }) {
-    const productName = document.createElement("h2");
-
-    productName.textContent = name;
-
-    return productName;
-}
-
-function createProductColor(color) {
-    const productColor = document.createElement("p");
-
-    productColor.textContent = color;
-
-    return productColor;
-}
-
-function createProductPrice({ price }) {
-    const productPrice = document.createElement("p");
-
-    productPrice.textContent = `${price} €`;
-
-    return productPrice;
 }
 
 function createProductSettings(quantity) {
@@ -105,11 +83,10 @@ function createProductSettings(quantity) {
 
 function createProductQuantityContainer(quantity) {
     const productQuantityContainer = document.createElement("div");
-    const productQuantityText = document.createElement("p");
+    const productQuantityText = createProductElement("p", "Qté : ");
     const productQuantityInput = createQuantityInput(quantity);
 
     productQuantityContainer.classList.add("cart__item__content__settings__quantity");
-    productQuantityText.textContent = "Qté : ";
     productQuantityContainer.append(productQuantityText, productQuantityInput);
 
     return productQuantityContainer;
@@ -130,11 +107,9 @@ function createQuantityInput(quantity) {
 
 function createProductDeleteContainer() {
     const productDeleteContainer = document.createElement("div");
-    const productDeleteText = document.createElement("p");
+    const productDeleteText = createProductElement("p", "Supprimer", "deleteItem");
 
     productDeleteContainer.classList.add("cart__item__content__settings__delete");
-    productDeleteText.classList.add("deleteItem");
-    productDeleteText.textContent = "Supprimer";
     productDeleteContainer.append(productDeleteText);
 
     return productDeleteContainer;

@@ -1,5 +1,6 @@
 import { getData } from "./modules/get-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
+import { createProductElement } from "./modules/create-product-element.js";
 
 createDynamicProducts();
 
@@ -25,30 +26,13 @@ function createProductCard(productData) {
 }
 
 function createProductArticle(productData) {
+    const { name, description } = productData;
     const productArticle = document.createElement("article");
     const productImage = createProductImage(productData);
-    const productTitle = createProductTitle(productData);
-    const productDescription = createProductDescription(productData);
+    const productTitle = createProductElement("h3", name, "productName");
+    const productDescription = createProductElement("p", description, "productDescription");
 
     productArticle.append(productImage, productTitle, productDescription);
 
     return productArticle;
-}
-
-function createProductTitle({ name }) {
-    const productTitle = document.createElement("h3");
-
-    productTitle.classList.add("productName");
-    productTitle.textContent = name;
-
-    return productTitle;
-}
-
-function createProductDescription({ description }) {
-    const productDescription = document.createElement("p");
-
-    productDescription.classList.add("productDescription");
-    productDescription.textContent = description;
-
-    return productDescription;
 }
