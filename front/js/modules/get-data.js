@@ -1,3 +1,5 @@
+import { setApiPath } from "./set-api-path.js";
+
 export async function getData(endpoint) {
     try {
         const apiPath = setApiPath(endpoint);
@@ -14,16 +16,6 @@ export async function getData(endpoint) {
         alert("Une erreur est survenue");
         redirectToHomepage();
     }
-}
-
-function setApiPath(endpoint) {
-    const basePath = "http://localhost:3000/api/products";
-
-    if (!endpoint) {
-        return basePath;
-    }
-
-    return `${basePath}/${endpoint}`;
 }
 
 function redirectToHomepage() {
