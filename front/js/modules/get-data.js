@@ -23,7 +23,7 @@ function setApiPath(endpoint) {
         return basePath;
     }
 
-    return basePath + "/" + endpoint;
+    return `${basePath}/${endpoint}`;
 }
 
 function redirectToHomepage() {
@@ -36,5 +36,5 @@ function setHomepageUrl() {
     const urlOrigin = currentUrl.origin;
     const homepagePath = "/front/html/index.html";
 
-    return urlOrigin + homepagePath;
+    return `${urlOrigin}${homepagePath}`;
 }
