@@ -1,6 +1,7 @@
 import { getData } from "./modules/get-data.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
+import { setApiPath } from "./modules/set-api-path.js";
 
 createDynamicCart();
 
@@ -12,6 +13,7 @@ async function createDynamicCart() {
     handleRemoveButtons();
     handleQuantityInputs();
     setTotals();
+    handleOrderForm();
 }
 
 async function createCartItem(storedProduct) {
@@ -153,4 +155,120 @@ function setTotals() {
 
     totalQuantityElement.textContent = totalCartQuantity.toString();
     totalPriceElement.textContent = totalCartPrice.toString();
+}
+
+function handleOrderForm() {
+    const orderForm = document.forms[0];
+    const inputElements = Array.from(orderForm.elements);
+    const formFields = inputElements.filter(inputElement => inputElement.type !== "submit");
+
+    orderForm.setAttribute("novalidate", true);
+
+    checkCart(inputElements);
+    checkValidityOnInput(formFields);
+    checkValidtyOnSubmit(orderForm, formFields);
+}
+
+function checkCart(inputs) {
+    for (let input of inputs) {
+        input.addEventListener("focus", function() {
+            const storedProducts = getStorageData();
+
+            if (storedProducts.length === 0) {
+                alert("Votre panier est vide");
+                this.blur();
+            }
+        });
+    }
+}
+
+function checkValidityOnInput(inputs) {
+    for (let input of inputs) {
+        input.addEventListener("input", function() {
+            if (input.validity.valid) {
+                input.nextElementSibling.textContent = "";
+            } else {
+                showInputError(input);
+            }
+        });
+    }
+}
+
+function showInputError(input) {
+    const inputError = input.nextElementSibling;
+
+    switch (true) {
+        case input.validity.valueMissing:
+            inputError.textContent = "Ce champ est requis";
+            break;
+        case input.validity.typeMismatch:
+            inputError.textContent = "Le format n'est pas valide";
+            break;
+    }
+}
+
+function checkValidtyOnSubmit(form, inputs) {
+    form.addEventListener("submit", function(event) {
+        let isFormValid = true;
+        event.preventDefault();
+
+        for (let input of inputs) {
+            if (!input.validity.valid) {
+                isFormValid = false;
+                showInputError(input);
+            } 
+        }
+
+        if (isFormValid) {
+            submitOrderForm(form);
+        }
+    });
+}
+
+async function submitOrderForm(form) {
+    const orderData = createOrderData(form);
+    const { orderId } = await postOrderData(orderData);
+
+    /* localStorage.clear(); */
+    window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?order=${orderId}`;
+}
+
+function createOrderData(form) {
+    const storedProducts = getStorageData();
+    const orderProductIds = storedProducts.map(storedProduct => storedProduct.id);
+    const orderFormData = new FormData(form);
+    const orderData = {
+        contact: {},
+        products: orderProductIds,
+    };
+
+    for (const [key, value] of orderFormData) {
+        orderData.contact[key] = value;
+    }
+
+    return orderData;
+}
+
+async function postOrderData(data) {
+    try {
+        const apiPath = setApiPath("order");
+
+        const response = await fetch(apiPath, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });
+    
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(JSON.stringify(result));
+        }  
+
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
 }
