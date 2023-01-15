@@ -27,30 +27,28 @@ function getProductId() {
     return currentUrl.searchParams.get("id");
 }
 
-function setProductInformation(productData) {
+function setProductInformation({ name, price, description }) {
     const productTitle = document.querySelector("#title");
     const productPrice = document.querySelector("#price");
     const productDescription = document.querySelector("#description");
 
-    productTitle.textContent = productData.name;
-    productPrice.textContent = productData.price; /* format ? */
-    productDescription.textContent = productData.description;
+    productTitle.textContent = name;
+    productPrice.textContent = price;
+    productDescription.textContent = description;
 }
 
 function appendProductOptions({ colors }) {
     const productColors = document.querySelector("#colors");
-    const productColorsData = colors;
-    const productOptions = productColorsData.map(createProductOption);
+    const productOptions = colors.map(createProductOption);
 
     productColors.append(...productOptions);
 }
 
-function createProductOption(productColorData) {
+function createProductOption(color) {
     const productOption = document.createElement("option");
-    const valueContent = productColorData;
 
-    productOption.setAttribute("value", valueContent);
-    productOption.textContent = productColorData;
+    productOption.setAttribute("value", color);
+    productOption.textContent = color;
 
     return productOption;
 }
@@ -128,8 +126,7 @@ function addToCart(storageObject) {
     } else {
         for (const [index, storedProduct] of storedProducts.entries()) {
             if (isSameProduct(storedProduct, storageObject)) {
-                storedProduct.quantity =
-                    storedProduct.quantity + storageObject.quantity;
+                storedProduct.quantity += storageObject.quantity;
                 break;
             }
 
