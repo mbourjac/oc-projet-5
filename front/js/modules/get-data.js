@@ -1,7 +1,7 @@
 export async function getData(endpoint) {
     try {
-        const fullPath = setFullPath(endpoint);
-        const response = await fetch(fullPath);
+        const apiPath = setApiPath(endpoint);
+        const response = await fetch(apiPath);
         const data = await response.json();
 
         if (!response.ok) {
@@ -16,7 +16,7 @@ export async function getData(endpoint) {
     }
 }
 
-function setFullPath(endpoint) {
+function setApiPath(endpoint) {
     const basePath = "http://localhost:3000/api/products";
 
     if (!endpoint) {
