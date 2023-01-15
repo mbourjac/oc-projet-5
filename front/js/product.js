@@ -2,6 +2,7 @@ import { getData } from "./modules/get-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
+import { isSameProduct } from "./modules/is-same-product.js";
 
 createDynamicProduct();
 
@@ -126,10 +127,7 @@ function addToCart(storageObject) {
         storedProducts.push(storageObject);
     } else {
         for (const [index, storedProduct] of storedProducts.entries()) {
-            if (
-                storedProduct.id === storageObject.id &&
-                storedProduct.color === storageObject.color
-            ) {
+            if (isSameProduct(storedProduct, storageObject)) {
                 storedProduct.quantity =
                     storedProduct.quantity + storageObject.quantity;
                 break;

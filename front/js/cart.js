@@ -4,6 +4,7 @@ import { createProductElement } from "./modules/create-product-element.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
 import { setApiPath } from "./modules/set-api-path.js";
+import { isSameProduct } from "./modules/is-same-product.js";
 
 createDynamicCart();
 
@@ -144,18 +145,11 @@ function removeFromDom(cartProduct) {
 }
 
 function removeFromStorage(cartProduct) {
-    const cartProductId = cartProduct.dataset.id;
-    const cartProductColor = cartProduct.dataset.color;
     const storedProducts = getStorageData();
     let updatedStorage = [];
 
     for (const storedProduct of storedProducts) {
-        if (
-            !(
-                storedProduct.color === cartProductColor &&
-                storedProduct.id === cartProductId
-            )
-        ) {
+        if (!isSameProduct(storedProduct, cartProduct.dataset)) {
             updatedStorage.push(storedProduct);
         }
     }
@@ -177,8 +171,6 @@ function handleQuantityInputs() {
 
 function updateCartQuantity() {
     const cartProduct = this.closest("article");
-    const cartProductId = cartProduct.dataset.id;
-    const cartProductColor = cartProduct.dataset.color;
     const currentQuantity = this.getAttribute("value");
     const updatedQuantity = +this.value;
     const storedProducts = getStorageData();
@@ -194,10 +186,7 @@ function updateCartQuantity() {
             break;
         default:
             for (const storedProduct of storedProducts) {
-                if (
-                    storedProduct.id === cartProductId &&
-                    storedProduct.color === cartProductColor
-                ) {
+                if (isSameProduct(storedProduct, cartProduct.dataset)) {
                     storedProduct.quantity = updatedQuantity;
                     this.setAttribute("value", updatedQuantity.toString());
                     setTotals();
