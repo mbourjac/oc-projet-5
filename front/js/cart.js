@@ -149,15 +149,15 @@ function removeFromDom(cartProduct) {
 
 function removeFromStorage(cartProduct) {
     const storedProducts = getStorageData();
-    let updatedStorage = [];
+    const updatedProducts = [];
 
     for (const storedProduct of storedProducts) {
         if (!isSameProduct(storedProduct, cartProduct.dataset)) {
-            updatedStorage.push(storedProduct);
+            updatedProducts.push(storedProduct);
         }
     }
 
-    setStorageData(updatedStorage);
+    setStorageData(updatedProducts);
 }
 
 function handleQuantityInputs() {
@@ -212,14 +212,14 @@ function setTotals() {
 
 function handleOrderForm() {
     const orderForm = document.forms[0];
-    const inputElements = Array.from(orderForm.elements);
-    const formFields = inputElements.filter(inputElement => inputElement.type !== "submit");
+    const orderInputs = Array.from(orderForm.elements);
+    const orderFields = orderInputs.filter(inputElement => inputElement.type !== "submit");
 
     orderForm.setAttribute("novalidate", true);
 
-    checkCart(inputElements);
-    checkValidityOnInput(formFields);
-    checkValidtyOnSubmit(orderForm, formFields);
+    checkCart(orderInputs);
+    checkValidityOnInput(orderFields);
+    checkValidtyOnSubmit(orderForm, orderFields);
 }
 
 function checkCart(inputs) {
@@ -248,14 +248,14 @@ function checkValidityOnInput(inputs) {
 }
 
 function showInputError(input) {
-    const inputError = input.nextElementSibling;
+    const inputErrorElement = input.nextElementSibling;
 
     switch (true) {
         case input.validity.valueMissing:
-            inputError.textContent = "Ce champ est requis";
+            inputErrorElement.textContent = "Ce champ est requis";
             break;
         case input.validity.typeMismatch:
-            inputError.textContent = "Le format n'est pas valide";
+            inputErrorElement.textContent = "Le format n'est pas valide";
             break;
     }
 }
