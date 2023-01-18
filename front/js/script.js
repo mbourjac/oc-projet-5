@@ -5,7 +5,7 @@ import { createProductElement } from "./modules/create-product-element.js";
 createDynamicProducts();
 
 async function createDynamicProducts() {
-    const productsData = await getData();
+    const productsData = await getData("products");
 
     for (const productData of productsData) {
         const productsContainer = document.querySelector(".items");

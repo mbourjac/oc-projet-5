@@ -8,7 +8,7 @@ createDynamicProduct();
 
 async function createDynamicProduct() {
     const productId = getProductId();
-    const productData = await getData(productId);
+    const productData = await getData(`products/${productId}`);
 
     const productContainer = document.querySelector(".item__img");
     const productImage = createProductImage(productData);

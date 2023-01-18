@@ -5,8 +5,9 @@ import { alertQuantityError } from "./modules/alert-quantity-error.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { updateStorageData } from "./modules/update-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
-import { setApiPath } from "./modules/set-api-path.js";
+import { setApiEndpoint } from "./modules/set-api-endpoint.js";
 import { isSameProduct } from "./modules/is-same-product.js";
+import { redirectToNewPage } from "./modules/redirect-to-new-page.js";
 
 createDynamicCart();
 
@@ -24,7 +25,7 @@ async function createDynamicCart() {
 
 async function createCartProduct(storedProduct) {
     const {id, color, quantity} = storedProduct;
-    const productData = await getData(id);
+    const productData = await getData(`products/${id}`);
 
     const productArticle = document.createElement("article");
     const productImageContainer = createProductImageContainer(productData);
@@ -283,7 +284,7 @@ async function submitOrderForm(form) {
     const { orderId } = await postOrderData(orderData);
 
     /* localStorage.clear(); */
-    window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?order=${orderId}`;
+    redirectToNewPage("confirmation.html", { orderId });
 }
 
 function createOrderData(form) {
@@ -304,9 +305,9 @@ function createOrderData(form) {
 
 async function postOrderData(data) {
     try {
-        const apiPath = setApiPath("order");
+        const apiEndpoint = setApiEndpoint("products/order");
 
-        const response = await fetch(apiPath, {
+        const response = await fetch(apiEndpoint, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

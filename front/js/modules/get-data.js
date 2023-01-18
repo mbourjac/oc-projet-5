@@ -1,9 +1,10 @@
-import { setApiPath } from "./set-api-path.js";
+import { setApiEndpoint } from "./set-api-endpoint.js";
+import { redirectToNewPage } from "./redirect-to-new-page.js";
 
-export async function getData(endpoint) {
+export async function getData(path) {
     try {
-        const apiPath = setApiPath(endpoint);
-        const response = await fetch(apiPath);
+        const apiEndpoint = setApiEndpoint(path);
+        const response = await fetch(apiEndpoint);
         const data = await response.json();
 
         if (!response.ok) {
@@ -14,19 +15,6 @@ export async function getData(endpoint) {
     } catch (error) {
         console.error(error);
         alert("Une erreur est survenue");
-        redirectToHomepage();
+        redirectToNewPage("index.html");
     }
-}
-
-function redirectToHomepage() {
-    const homepageUrl = setHomepageUrl();
-    window.location.href = homepageUrl;
-}
-
-function setHomepageUrl() {
-    const currentUrl = new URL(document.location);
-    const urlOrigin = currentUrl.origin;
-    const homepagePath = "/front/html/index.html";
-
-    return `${urlOrigin}${homepagePath}`;
 }
