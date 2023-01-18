@@ -1,8 +1,8 @@
 import { getData } from "./modules/get-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
-import { getStorageData } from "./modules/get-storage-data.js";
+import { alertQuantityError } from "./modules/alert-quantity-error.js";
+import { updateStorageData } from "./modules/update-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
-import { isSameProduct } from "./modules/is-same-product.js";
 
 createDynamicProduct();
 
@@ -15,10 +15,9 @@ async function createDynamicProduct() {
     productContainer.append(productImage);
 
     setProductInformation(productData);
-    appendProductOptions(productData);
-
-    const storageObject = createStorageObject(productId);
-    handleCartButton(storageObject);
+    appendColorOptions(productData);
+    handleQuantityInput();
+    handleCartButton();
 }
 
 function getProductId() {
@@ -37,105 +36,69 @@ function setProductInformation({ name, price, description }) {
     productDescription.textContent = description;
 }
 
-function appendProductOptions({ colors }) {
-    const productColors = document.querySelector("#colors");
-    const productOptions = colors.map(createProductOption);
+function appendColorOptions({ colors }) {
+    const colorsSelect = document.querySelector("#colors");
+    const colorOptions = colors.map(createColorOption);
 
-    productColors.append(...productOptions);
+    colorsSelect.append(...colorOptions);
 }
 
-function createProductOption(color) {
-    const productOption = document.createElement("option");
+function createColorOption(color) {
+    const colorOption = document.createElement("option");
 
-    productOption.setAttribute("value", color);
-    productOption.textContent = color;
+    colorOption.setAttribute("value", color);
+    colorOption.textContent = color;
 
-    return productOption;
+    return colorOption;
 }
 
-function createStorageObject(productId) {
-    const storageObject = {
-        id: productId,
-        color: "",
-        quantity: 0,
-    };
+function handleQuantityInput() {
+    const quantityInput = document.querySelector("#quantity");
 
-    setStorageObjectColor();
-    setStorageObjectQuantity();
-
-    function setStorageObjectColor() {
-        const productColors = document.querySelector("#colors");
-
-        productColors.addEventListener("change", function () {
-            storageObject.color = this.value;
-        });
-    }
-
-    function setStorageObjectQuantity() {
-        const productQuantity = document.querySelector("#quantity");
-
-        productQuantity.addEventListener("change", function () {
-            let updatedQuantity = +this.value;
-
-            switch (true) {
-                case updatedQuantity > 100:
-                    alert("Veuillez choisir une quantité inférieure à 100");
-                    this.value = "0";
-                    storageObject.quantity = 0;
-                    break;
-                case updatedQuantity < 1:
-                    alert("Veuillez choisir une quantité supérieure à 0");
-                    this.value = "0";
-                    storageObject.quantity = 0;
-                    break;
-                default:
-                    storageObject.quantity = updatedQuantity;
-            }
-        });
-    }
-
-    return storageObject;
+    quantityInput.required = true;
+    
+    quantityInput.addEventListener("change", function () {
+        if (!this.validity.valid) {
+            alertQuantityError(this);
+            this.value = "0";
+        }
+    });
 }
 
-function handleCartButton(storageObject) {
+function handleCartButton() {
     const cartButton = document.querySelector("#addToCart");
-
+    
     cartButton.addEventListener("click", function () {
+        const colorsSelect = document.querySelector("#colors"); /* déclarer variable dans createDynamicProduct() ? */
+        const quantityInput = document.querySelector("#quantity"); /* déclarer variable dans createDynamicProduct() ? */
+        
+        const selectedColor = colorsSelect.value;
+        const selectedQuantity = +quantityInput.value;
+
         switch (true) {
-            case storageObject.color === "" && storageObject.quantity === 0:
-                alert("Veuillez choisir une couleur et renseigner la quantité");
+            case selectedColor === "" && selectedQuantity === 0:
+                alert("Veuillez choisir une couleur et renseigner la quantité.");
                 break;
-            case storageObject.color === "":
-                alert("Veuillez choisir une couleur");
+            case selectedColor === "":
+                alert("Veuillez choisir une couleur.");
                 break;
-            case storageObject.quantity === 0:
-                alert("Veuillez renseigner la quantité");
+            case selectedQuantity === 0:
+                alert("Veuillez renseigner la quantité.");
                 break;
             default:
-                addToCart(storageObject);
+                addToCart(selectedColor, selectedQuantity);
                 /* alert("Article ajouté au panier"); */
         }
     });
 }
 
-function addToCart(storageObject) {
-    const storedProducts = getStorageData();
+function addToCart(selectedColor, selectedQuantity) {
+    const productId = getProductId(); /* passer variable depuis handleCartButton() ? */
+    const updatedProducts = updateStorageData(productId, selectedColor, selectedQuantity, addQuantity);
+    
+    setStorageData(updatedProducts);
+}
 
-    if (storedProducts.length === 0) {
-        storedProducts.push(storageObject);
-    } else {
-        for (const [index, storedProduct] of storedProducts.entries()) {
-            if (isSameProduct(storedProduct, storageObject)) {
-                storedProduct.quantity += storageObject.quantity;
-                break;
-            }
-
-            if (index === storedProducts.length - 1) {
-                storedProducts.push(storageObject);
-                break;
-            }
-        }
-    }
-
-    setStorageData(storedProducts);
+function addQuantity(newProduct, storedProduct) {
+    newProduct.quantity += storedProduct.quantity;
 }
