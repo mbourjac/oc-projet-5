@@ -1,7 +1,9 @@
 import { getData } from "./modules/get-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { createProductElement } from "./modules/create-product-element.js";
+import { alertQuantityError } from "./modules/alert-quantity-error.js";
 import { getStorageData } from "./modules/get-storage-data.js";
+import { updateStorageData } from "./modules/update-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
 import { setApiPath } from "./modules/set-api-path.js";
 import { isSameProduct } from "./modules/is-same-product.js";
@@ -102,6 +104,7 @@ function createQuantityInput(quantity) {
     productQuantityInput.min = "1";
     productQuantityInput.max = "100";
     productQuantityInput.value = quantity;
+    productQuantityInput.required = true;
 
     return productQuantityInput;
 }
@@ -161,41 +164,29 @@ function handleQuantityInputs() {
     const quantityInputs = document.querySelectorAll(".itemQuantity");
 
     for (const quantityInput of quantityInputs) {
-        quantityInput.addEventListener("change", function () {
-            const updatedStorage = updateCartQuantity.call(this);
+        quantityInput.defaultValue = quantityInput.value;
 
-            setStorageData(updatedStorage);
+        quantityInput.addEventListener("change", function () {
+            if (!this.validity.valid) {
+                alertQuantityError(this);
+                this.value = quantityInput.defaultValue;
+            } else {
+                quantityInput.defaultValue = this.value;
+                updateCartQuantity(this);
+                setTotals();
+            }
         });
     }
 }
 
-function updateCartQuantity() {
-    const cartProduct = this.closest("article");
-    const currentQuantity = this.getAttribute("value");
-    const updatedQuantity = +this.value;
-    const storedProducts = getStorageData();
+function updateCartQuantity(input) {
+    const productId = input.closest("article").dataset.id;
+    const productColor = input.closest("article").dataset.color;
+    const updatedQuantity = +input.value;
 
-    switch (true) {
-        case updatedQuantity > 100:
-            alert("Veuillez choisir une quantité inférieure à 100");
-            this.value = currentQuantity;
-            break;
-        case updatedQuantity < 1:
-            alert("Veuillez choisir une quantité supérieure à 0");
-            this.value = currentQuantity;
-            break;
-        default:
-            for (const storedProduct of storedProducts) {
-                if (isSameProduct(storedProduct, cartProduct.dataset)) {
-                    storedProduct.quantity = updatedQuantity;
-                    this.setAttribute("value", updatedQuantity.toString());
-                    setTotals();
-                    break;
-                }
-            }
-    }
+    const updatedProducts = updateStorageData(productId, productColor, updatedQuantity);
 
-    return storedProducts;
+    setStorageData(updatedProducts);
 }
 
 function setTotals() {
@@ -207,7 +198,7 @@ function setTotals() {
     let totalCartPrice = 0;
 
     for (const quantityInput of quantityInputs) {
-        const productQuantity = +quantityInput.getAttribute("value");
+        const productQuantity = +quantityInput.value;
         const productPrice = +quantityInput.closest("article").dataset.price;
         const totalProductPrice = productQuantity * productPrice;
 
