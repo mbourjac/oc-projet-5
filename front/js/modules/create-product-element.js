@@ -1,7 +1,7 @@
 export function createProductElement(element, content, className) {
     const productElement = document.createElement(element);
 
-    if (className !== undefined) {
+    if (className) {
         productElement.classList.add(className);
     }
 

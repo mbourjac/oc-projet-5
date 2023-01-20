@@ -8,7 +8,7 @@ function setNewPageUrl(path, parametersObject) {
     const baseUrl = new URL("/front/html/", window.location.href);
     const newPageUrl = new URL(path, baseUrl);
 
-    if (parametersObject !== undefined) {
+    if (parametersObject) {
         for (const [key, value] of Object.entries(parametersObject)) {
             newPageUrl.searchParams.set(key, value);
         }
