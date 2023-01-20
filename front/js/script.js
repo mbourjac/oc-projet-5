@@ -1,11 +1,11 @@
-import { getData } from "./modules/get-data.js";
+import { fetchData } from "./modules/fetch-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { createProductElement } from "./modules/create-product-element.js";
 
 createDynamicProducts();
 
 async function createDynamicProducts() {
-    const productsData = await getData("products");
+    const productsData = await fetchData("products");
 
     for (const productData of productsData) {
         const productsContainer = document.querySelector(".items");

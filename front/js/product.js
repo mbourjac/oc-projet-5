@@ -1,4 +1,4 @@
-import { getData } from "./modules/get-data.js";
+import { fetchData } from "./modules/fetch-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { alertQuantityError } from "./modules/alert-quantity-error.js";
 import { updateStorageData } from "./modules/update-storage-data.js";
@@ -8,7 +8,7 @@ createDynamicProduct();
 
 async function createDynamicProduct() {
     const productId = getProductId();
-    const productData = await getData(`products/${productId}`);
+    const productData = await fetchData(`products/${productId}`);
 
     const productContainer = document.querySelector(".item__img");
     const productImage = createProductImage(productData);

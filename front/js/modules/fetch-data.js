@@ -1,10 +1,10 @@
 import { setApiEndpoint } from "./set-api-endpoint.js";
 import { redirectToNewPage } from "./redirect-to-new-page.js";
 
-export async function getData(path) {
+export async function fetchData(path, options) {
     try {
         const apiEndpoint = setApiEndpoint(path);
-        const response = await fetch(apiEndpoint);
+        const response = await fetch(apiEndpoint, options); /* check if options ? */
 
         if (!response.ok) {
             throw handleError(response);
@@ -14,7 +14,7 @@ export async function getData(path) {
 
         return data;
     } catch (error) {
-        alert("Une erreur est survenue");
+        alert("Une erreur est survenue.");
         console.error(error);
         /* redirectToNewPage("index.html"); */
     }
