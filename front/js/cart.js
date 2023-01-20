@@ -232,12 +232,12 @@ function handleOrderForm() {
 
     orderForm.setAttribute("novalidate", true);
 
-    checkCart(orderInputs);
+    isCartEmpty(orderInputs);
     checkValidityOnInput(orderFields);
     checkValidtyOnSubmit(orderForm, orderFields);
 }
 
-function checkCart(inputs) {
+function isCartEmpty(inputs) {
     for (let input of inputs) {
         input.addEventListener("focus", function() {
             const storedProducts = getStorageData();
