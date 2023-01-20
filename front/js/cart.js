@@ -1,4 +1,4 @@
-import { getData } from "./modules/get-data.js";
+import { fetchData } from "./modules/fetch-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { createProductElement } from "./modules/create-product-element.js";
 import { alertQuantityError } from "./modules/alert-quantity-error.js";
@@ -25,7 +25,7 @@ async function createDynamicCart() {
 
 async function createCartProduct(storedProduct) {
     const {id, color, quantity} = storedProduct;
-    const productData = await getData(`products/${id}`);
+    const productData = await fetchData(`products/${id}`);
 
     const productArticle = document.createElement("article");
     const productImageContainer = createProductImageContainer(productData);
@@ -318,25 +318,13 @@ function createOrderData(form) {
 }
 
 async function postOrderData(data) {
-    try {
-        const apiEndpoint = setApiEndpoint("products/order");
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    };
 
-        const response = await fetch(apiEndpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data)
-        });
-    
-        const result = await response.json();
-
-        if (!response.ok) {
-            throw new Error(JSON.stringify(result));
-        }  
-
-        return result;
-    } catch (error) {
-        console.error(error);
-    }
+    return fetchData("products/order", options);
 }
