@@ -5,16 +5,28 @@ export async function getData(path) {
     try {
         const apiEndpoint = setApiEndpoint(path);
         const response = await fetch(apiEndpoint);
-        const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(JSON.stringify(data));
-        }  
+            throw handleError(response);
+        }
+
+        const data = await response.json();
 
         return data;
     } catch (error) {
-        console.error(error);
         alert("Une erreur est survenue");
-        redirectToNewPage("index.html");
+        console.error(error);
+        /* redirectToNewPage("index.html"); */
+    }
+}
+
+function handleError(response) {
+    switch(response.status) {
+        case 404:
+            return new Error("Not Found: The requested resource could not be found.");
+        case 500:
+            return new Error("Internal Server Error: There was a problem with the server.");
+        default:
+            return new Error(`HTTP error! status: ${response.status}`);
     }
 }
