@@ -195,20 +195,34 @@ function setTotals() {
     const totalQuantityElement = document.querySelector("#totalQuantity");
     const totalPriceElement = document.querySelector("#totalPrice");
 
-    let totalCartQuantity = 0;
-    let totalCartPrice = 0;
+    const totalQuantity = calculateTotalQuantity(quantityInputs);
+    const totalPrice = calculateTotalPrice(quantityInputs);
+
+    totalQuantityElement.textContent = totalQuantity.toString();
+    totalPriceElement.textContent = totalPrice.toString();
+}
+
+function calculateTotalQuantity(quantityInputs) {
+    let totalQuantity = 0;
 
     for (const quantityInput of quantityInputs) {
-        const productQuantity = +quantityInput.value;
-        const productPrice = +quantityInput.closest("article").dataset.price;
-        const totalProductPrice = productQuantity * productPrice;
-
-        totalCartQuantity += productQuantity;
-        totalCartPrice += totalProductPrice;
+        totalQuantity += +quantityInput.value;
     }
 
-    totalQuantityElement.textContent = totalCartQuantity.toString();
-    totalPriceElement.textContent = totalCartPrice.toString();
+    return totalQuantity;
+}
+
+function calculateTotalPrice(quantityInputs) {
+        let totalPrice = 0;
+
+        for (const quantityInput of quantityInputs) {
+            const productQuantity = +quantityInput.value;
+            const productPrice = +quantityInput.closest("article").dataset.price;
+    
+            totalPrice += productQuantity * productPrice;
+        }
+
+        return totalPrice;
 }
 
 function handleOrderForm() {
