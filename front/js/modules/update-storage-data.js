@@ -8,9 +8,7 @@ export function updateStorageData(id, color, quantity, addQuantity) {
 
     for (let storedProduct of storedProducts) {
         if (isSameProduct(newProduct, storedProduct)) {
-            if (addQuantity) {
-                addQuantity(newProduct, storedProduct);
-            }
+            addQuantity?.(newProduct, storedProduct);
         } else {
             updatedProducts.push(storedProduct);
         }
