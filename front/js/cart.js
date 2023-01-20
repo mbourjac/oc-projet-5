@@ -5,7 +5,6 @@ import { alertQuantityError } from "./modules/alert-quantity-error.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { updateStorageData } from "./modules/update-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
-import { setApiEndpoint } from "./modules/set-api-endpoint.js";
 import { isSameProduct } from "./modules/is-same-product.js";
 import { redirectToNewPage } from "./modules/redirect-to-new-page.js";
 
