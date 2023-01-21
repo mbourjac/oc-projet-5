@@ -3,7 +3,6 @@ import { createProductImage } from "./modules/create-product-image.js";
 import { createProductElement } from "./modules/create-product-element.js";
 import { alertQuantityError } from "./modules/alert-quantity-error.js";
 import { getStorageData } from "./modules/get-storage-data.js";
-import { updateStorageData } from "./modules/update-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
 import { isSameProduct } from "./modules/is-same-product.js";
 import { redirectToNewPage } from "./modules/redirect-to-new-page.js";
@@ -149,15 +148,15 @@ function removeFromDom(cartProduct) {
 
 function removeFromStorage(cartProduct) {
     const storedProducts = getStorageData();
-    const updatedProducts = [];
+    const updatedStorage = [];
 
     for (const storedProduct of storedProducts) {
         if (!isSameProduct(storedProduct, cartProduct.dataset)) {
-            updatedProducts.push(storedProduct);
+            updatedStorage.push(storedProduct);
         }
     }
 
-    setStorageData(updatedProducts);
+    setStorageData(updatedStorage);
 }
 
 function handleQuantityInputs() {
@@ -180,13 +179,28 @@ function handleQuantityInputs() {
 }
 
 function updateCartQuantity(input) {
-    const productId = input.closest("article").dataset.id;
-    const productColor = input.closest("article").dataset.color;
-    const updatedQuantity = +input.value;
+    const id = input.closest("article").dataset.id;
+    const color = input.closest("article").dataset.color;
+    const quantity = +input.value;
+    const updatedStorage = updateStorage({ id, color, quantity });
 
-    const updatedProducts = updateStorageData(productId, productColor, updatedQuantity);
+    setStorageData(updatedStorage);
+}
 
-    setStorageData(updatedProducts);
+function updateStorage({ id, color, quantity }) {
+    const storedProducts = getStorageData();
+    const newProduct = { id, color, quantity };
+    let updatedStorage = [];
+
+    for (let storedProduct of storedProducts) {
+        if (!isSameProduct(newProduct, storedProduct)) {
+            updatedStorage.push(storedProduct);
+        }
+    }
+
+    updatedStorage.push(newProduct);
+
+    return updatedStorage;
 }
 
 function setTotals() {

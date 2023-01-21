@@ -2,8 +2,9 @@ import { fetchData } from "./modules/fetch-data.js";
 import { getUrlParameter } from "./modules/get-url-parameter.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { alertQuantityError } from "./modules/alert-quantity-error.js";
-import { updateStorageData } from "./modules/update-storage-data.js";
+import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
+import { isSameProduct } from "./modules/is-same-product.js";
 
 createDynamicProduct();
 
@@ -73,33 +74,47 @@ function handleCartButton() {
         const colorsSelect = document.querySelector("#colors"); /* déclarer variable dans createDynamicProduct() ? */
         const quantityInput = document.querySelector("#quantity"); /* déclarer variable dans createDynamicProduct() ? */
         
-        const selectedColor = colorsSelect.value;
-        const selectedQuantity = +quantityInput.value;
+        const color = colorsSelect.value;
+        const quantity = +quantityInput.value;
 
         switch (true) {
-            case selectedColor === "" && selectedQuantity === 0:
+            case color === "" && quantity === 0:
                 alert("Veuillez choisir une couleur et renseigner la quantité.");
                 break;
-            case selectedColor === "":
+            case color === "":
                 alert("Veuillez choisir une couleur.");
                 break;
-            case selectedQuantity === 0:
+            case quantity === 0:
                 alert("Veuillez renseigner la quantité.");
                 break;
             default:
-                addToCart(selectedColor, selectedQuantity);
+                addToCart(color, quantity);
                 /* alert("Article ajouté au panier"); */
         }
     });
 }
 
-function addToCart(selectedColor, selectedQuantity) {
-    const productId = getProductId(); /* passer variable depuis handleCartButton() ? */
-    const updatedProducts = updateStorageData(productId, selectedColor, selectedQuantity, addQuantity);
+function addToCart(color, quantity) {
+    const id = getProductId();
+    const updatedStorage = addToStorage({ id, color, quantity });
     
-    setStorageData(updatedProducts);
+    setStorageData(updatedStorage);
 }
 
-function addQuantity(newProduct, storedProduct) {
-    newProduct.quantity += storedProduct.quantity;
+function addToStorage({ id, color, quantity }) {
+    const storedProducts = getStorageData();
+    const newProduct = { id, color, quantity };
+    let updatedStorage = [];
+
+    for (let storedProduct of storedProducts) {
+        if (isSameProduct(newProduct, storedProduct)) {
+            newProduct.quantity += storedProduct.quantity;
+        } else {
+            updatedStorage.push(storedProduct);
+        }
+    }
+
+    updatedStorage.push(newProduct);
+
+    return updatedStorage;
 }
