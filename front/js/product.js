@@ -19,7 +19,7 @@ async function createDynamicProduct() {
     setProductInformation(productData);
     appendColorOptions(productData);
     handleQuantityInput();
-    handleCartButton();
+    handleCartButton(productData);
 }
 
 function getProductId() {
@@ -67,7 +67,7 @@ function handleQuantityInput() {
     });
 }
 
-function handleCartButton() {
+function handleCartButton({ name }) {
     const cartButton = document.querySelector("#addToCart");
     
     cartButton.addEventListener("click", function () {
@@ -89,7 +89,7 @@ function handleCartButton() {
                 break;
             default:
                 addToCart(color, quantity);
-                /* alert("Article ajouté au panier"); */
+                alert(`Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire(s).`);
         }
     });
 }
