@@ -11,10 +11,9 @@ createDynamicCart();
 
 async function createDynamicCart() {
     const storedProducts = getStorageData();
-
     const cartProduct = await Promise.all(storedProducts.map(createCartProduct));
-    appendCartProduct(cartProduct);
 
+    appendCartProduct(cartProduct);
     handleRemoveButtons();
     handleQuantityInputs();
     setTotals();
@@ -22,7 +21,7 @@ async function createDynamicCart() {
 }
 
 async function createCartProduct(storedProduct) {
-    const {id, color, quantity} = storedProduct;
+    const { id, color, quantity } = storedProduct;
     const productData = await fetchData(`products/${id}`);
 
     const productArticle = document.createElement("article");
@@ -226,22 +225,24 @@ function calculateTotalQuantity(quantityInputs) {
 }
 
 function calculateTotalPrice(quantityInputs) {
-        let totalPrice = 0;
+    let totalPrice = 0;
 
-        for (const quantityInput of quantityInputs) {
-            const productQuantity = +quantityInput.value;
-            const productPrice = +quantityInput.closest("article").dataset.price;
-    
-            totalPrice += productQuantity * productPrice;
-        }
+    for (const quantityInput of quantityInputs) {
+        const productQuantity = +quantityInput.value;
+        const productPrice = +quantityInput.closest("article").dataset.price;
 
-        return totalPrice;
+        totalPrice += productQuantity * productPrice;
+    }
+
+    return totalPrice;
 }
 
 function handleOrderForm() {
     const orderForm = document.forms[0];
     const orderInputs = Array.from(orderForm.elements);
-    const orderFields = orderInputs.filter(inputElement => inputElement.type !== "submit");
+    const orderFields = orderInputs.filter(
+        (inputElement) => inputElement.type !== "submit"
+    );
 
     orderForm.setAttribute("novalidate", true);
 
@@ -252,7 +253,7 @@ function handleOrderForm() {
 
 function isCartEmpty(inputs) {
     for (let input of inputs) {
-        input.addEventListener("focus", function() {
+        input.addEventListener("focus", function () {
             const storedProducts = getStorageData();
 
             if (storedProducts.length === 0) {
@@ -265,7 +266,7 @@ function isCartEmpty(inputs) {
 
 function checkValidityOnInput(inputs) {
     for (let input of inputs) {
-        input.addEventListener("input", function() {
+        input.addEventListener("input", function () {
             if (input.validity.valid) {
                 input.nextElementSibling.textContent = "";
             } else {
@@ -289,7 +290,7 @@ function showInputError(input) {
 }
 
 function checkValidtyOnSubmit(form, inputs) {
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", function (event) {
         let isFormValid = true;
         event.preventDefault();
 
@@ -297,7 +298,7 @@ function checkValidtyOnSubmit(form, inputs) {
             if (!input.validity.valid) {
                 isFormValid = false;
                 showInputError(input);
-            } 
+            }
         }
 
         if (isFormValid) {
@@ -336,7 +337,7 @@ async function postOrderData(data) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     return fetchData("products/order", options);
