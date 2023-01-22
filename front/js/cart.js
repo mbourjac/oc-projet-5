@@ -256,8 +256,8 @@ function isCartEmpty(inputs) {
             const storedProducts = getStorageData();
 
             if (storedProducts.length === 0) {
-                alert("Votre panier est vide.");
-                this.blur();
+                alert("Votre panier est vide. Vous allez être redirigé vers la page d'accueil.");
+                redirectToNewPage("index.html");
             }
         });
     }
