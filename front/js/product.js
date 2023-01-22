@@ -13,13 +13,7 @@ async function createDynamicProduct() {
     const productData = await fetchData(`products/${productId}`);
 
     setPageTitle(productData);
-
-    const productContainer = document.querySelector(".item__img");
-    const productImage = createProductImage(productData);
-    productContainer.append(productImage);
-
-    setProductInformation(productData);
-    appendColorOptions(productData);
+    populateProductItem(productData);
     handleQuantityInput();
     handleCartButton(productData);
 }
@@ -28,6 +22,15 @@ function setPageTitle({ name }) {
     const pageTitle = document.querySelector("title");
 
     pageTitle.textContent = name;
+}
+
+function populateProductItem(productData) {
+    const productContainer = document.querySelector(".item__img");
+    const productImage = createProductImage(productData);
+    productContainer.append(productImage);
+
+    setProductInformation(productData);
+    appendColorOptions(productData);
 }
 
 function setProductInformation({ name, price, description }) {
