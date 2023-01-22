@@ -22,12 +22,6 @@ async function createDynamicProduct() {
     handleCartButton(productData);
 }
 
-function getProductId() {
-    const currentUrl = new URL(document.location);
-
-    return currentUrl.searchParams.get("id");
-}
-
 function setProductInformation({ name, price, description }) {
     const productTitle = document.querySelector("#title");
     const productPrice = document.querySelector("#price");
@@ -95,7 +89,7 @@ function handleCartButton({ name }) {
 }
 
 function addToCart(color, quantity) {
-    const id = getProductId();
+    const id = getUrlParameter("id");
     const updatedStorage = addToStorage({ id, color, quantity });
     
     setStorageData(updatedStorage);
