@@ -6,9 +6,9 @@ import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
 import { isSameProduct } from "./modules/is-same-product.js";
 
-createDynamicProduct();
+populateProductPage();
 
-async function createDynamicProduct() {
+async function populateProductPage() {
     const productId = getUrlParameter("id");
     const productData = await fetchData(`products/${productId}`);
 
@@ -76,8 +76,8 @@ function handleCartButton({ name }) {
     const cartButton = document.querySelector("#addToCart");
     
     cartButton.addEventListener("click", function () {
-        const colorsSelect = document.querySelector("#colors"); /* déclarer variable dans createDynamicProduct() ? */
-        const quantityInput = document.querySelector("#quantity"); /* déclarer variable dans createDynamicProduct() ? */
+        const colorsSelect = document.querySelector("#colors"); /* déclarer variable dans populateProductPage() ? */
+        const quantityInput = document.querySelector("#quantity"); /* déclarer variable dans populateProductPage() ? */
         
         const color = colorsSelect.value;
         const quantity = +quantityInput.value;
