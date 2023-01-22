@@ -256,7 +256,7 @@ function isCartEmpty(inputs) {
             const storedProducts = getStorageData();
 
             if (storedProducts.length === 0) {
-                alert("Votre panier est vide");
+                alert("Votre panier est vide.");
                 this.blur();
             }
         });
@@ -280,10 +280,10 @@ function showInputError(input) {
 
     switch (true) {
         case input.validity.valueMissing:
-            inputErrorElement.textContent = "Ce champ est requis";
+            inputErrorElement.textContent = "Ce champ est requis.";
             break;
         case input.validity.typeMismatch:
-            inputErrorElement.textContent = "Le format n'est pas valide";
+            inputErrorElement.textContent = "Le format n'est pas valide.";
             break;
     }
 }
