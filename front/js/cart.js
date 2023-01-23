@@ -246,9 +246,19 @@ function handleOrderForm() {
 
     orderForm.setAttribute("novalidate", true);
 
+    setNoNumberPattern();
     isCartEmpty(orderInputs);
     checkValidityOnInput(orderFields);
     checkValidtyOnSubmit(orderForm, orderFields);
+}
+
+function setNoNumberPattern() {
+    const firstName = document.querySelector("#firstName");
+    const lastName = document.querySelector("#lastName");
+    const noNumberPattern = "^([^\\d]+)$";
+
+    firstName.setAttribute("pattern", noNumberPattern);
+    lastName.setAttribute("pattern", noNumberPattern);
 }
 
 function isCartEmpty(inputs) {
@@ -285,6 +295,9 @@ function showInputError(input) {
             break;
         case input.validity.typeMismatch:
             inputErrorElement.textContent = "Le format n'est pas valide.";
+            break;
+        case input.validity.patternMismatch:
+            inputErrorElement.textContent = "Les chiffres ne sont pas autorisés pour ce champ.";
             break;
     }
 }
