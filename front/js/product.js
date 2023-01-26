@@ -78,25 +78,40 @@ function handleCartButton({ name }) {
     cartButton.addEventListener("click", function () {
         const colorsSelect = document.querySelector("#colors"); /* déclarer variable dans populateProductPage() ? */
         const quantityInput = document.querySelector("#quantity"); /* déclarer variable dans populateProductPage() ? */
-        
         const color = colorsSelect.value;
         const quantity = +quantityInput.value;
+        const errorMessage = checkSubmitErrors(color, quantity);
 
-        switch (true) {
-            case color === "" && quantity === 0:
-                alert("Veuillez choisir une couleur et renseigner la quantité.");
-                break;
-            case color === "":
-                alert("Veuillez choisir une couleur.");
-                break;
-            case quantity === 0:
-                alert("Veuillez renseigner la quantité.");
-                break;
-            default:
-                addToCart(color, quantity);
-                alert(`Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire(s).`);
+        if (errorMessage) {
+            alert(errorMessage);
+        } else {
+            addToCart(color, quantity);
+            alertAddedProduct({ name, color, quantity });
         }
     });
+}
+
+function checkSubmitErrors(color, quantity) {
+    switch (true) {
+        case color === "" && quantity === 0:
+            return "Veuillez choisir une couleur et renseigner la quantité.";
+        case color === "":
+            return "Veuillez choisir une couleur.";
+        case quantity === 0:
+            return "Veuillez renseigner la quantité.";
+        default:
+            return null;
+    }
+}
+
+function alertAddedProduct({ name, color, quantity }) {
+    let addedMessage = `Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire.`;
+
+    if (quantity === 1) {
+        alert(addedMessage);
+    } else {
+        alert(addedMessage.replace(".","s."));
+    }
 }
 
 function addToCart(color, quantity) {
