@@ -11,6 +11,11 @@ async function buildHomepage() {
     appendProductItems(productItems)
 }
 
+/**
+ * Creates a product item with the product data.
+ * @param {Object} productData - The product data.
+ * @returns {HTMLAnchorElement} The created product item.
+ */
 function createProductItem(productData) {
     const productItem = document.createElement("a");
     const productArticle = createProductArticle(productData);
@@ -21,6 +26,11 @@ function createProductItem(productData) {
     return productItem;
 }
 
+/**
+ * Creates an article element with the product data.
+ * @param {Object} productData - The product data.
+ * @returns {HTMLArticleElement} - The created article element.
+ */
 function createProductArticle(productData) {
     const { name, description } = productData;
     const productArticle = document.createElement("article");
@@ -33,6 +43,10 @@ function createProductArticle(productData) {
     return productArticle;
 }
 
+/**
+ * Appends product items to the container element.
+ * @param {Array<HTMLElement>} productItems - The product items to append.
+ */
 function appendProductItems(productItems) {
     const productsContainer = document.querySelector(".items");
 

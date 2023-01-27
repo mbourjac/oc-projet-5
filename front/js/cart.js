@@ -20,6 +20,12 @@ async function buildCartPage() {
     handleOrderForm();
 }
 
+/**
+ * Creates a cart product element.
+ * @async
+ * @param {Object} storedProduct - The product retrieved from local storage.
+ * @return {HTMLElement} cartProduct - The created cart product element.
+ */
 async function createCartProduct(storedProduct) {
     const { id, color, quantity } = storedProduct;
     const productData = await fetchData(`products/${id}`);
@@ -37,6 +43,11 @@ async function createCartProduct(storedProduct) {
     return cartProduct;
 }
 
+/**
+ * Creates a container element for the product image.
+ * @param {Object} productData - The data of the product.
+ * @returns {HTMLElement} - The created image container element.
+ */
 function createImageContainer(productData) {
     const imageContainer = document.createElement("div");
     const productImage = createProductImage(productData);
@@ -47,6 +58,13 @@ function createImageContainer(productData) {
     return imageContainer;
 }
 
+/**
+ * Creates a product content element.
+ * @param {Object} productData - The data of the product.
+ * @param {string} color - The color of the product.
+ * @param {number} quantity - The quantity of the product.
+ * @returns {HTMLElement} - The created product content element.
+ */
 function createProductContent(productData, color, quantity) {
     const productContent = document.createElement("div");
     const productDescription = createProductDescription(productData, color);
@@ -58,6 +76,12 @@ function createProductContent(productData, color, quantity) {
     return productContent;
 }
 
+/**
+ * Creates a container element for the product description.
+ * @param {Object} productData - The data of the product.
+ * @param {string} color - The color of the product.
+ * @returns {HTMLElement} - The container element for the product description.
+ */
 function createProductDescription(productData, color) {
     const { name, price } = productData;
     const productDescription = document.createElement("div");
@@ -71,6 +95,11 @@ function createProductDescription(productData, color) {
     return productDescription;
 }
 
+/**
+ * Creates a container element for the product settings including its quantity and delete button.
+ * @param {number} quantity - The quantity of the product.
+ * @returns {HTMLElement} - The container element for the product settings.
+ */
 function createProductSettings(quantity) {
     const productSettings = document.createElement("div");
     const quantityContainer = createQuantityContainer(quantity);
@@ -82,6 +111,11 @@ function createProductSettings(quantity) {
     return productSettings;
 }
 
+/**
+ * Creates a container element for the product quantity input and label.
+ * @param {number} quantity - The quantity of the product.
+ * @returns {HTMLElement} - The container element for the product quantity input and label.
+ */
 function createQuantityContainer(quantity) {
     const quantityContainer = document.createElement("div");
     const quantityLabel = createProductElement("p", "Qté : ");
@@ -93,6 +127,11 @@ function createQuantityContainer(quantity) {
     return quantityContainer;
 }
 
+/**
+ * Creates a quantity input element for a cart product.
+ * @param {number} quantity - The quantity to be set in the input element.
+ * @returns {HTMLElement} - The created quantity input element.
+ */
 function createQuantityInput(quantity) {
     const quantityInput = document.createElement("input");
 
@@ -107,6 +146,10 @@ function createQuantityInput(quantity) {
     return quantityInput;
 }
 
+/**
+ * Creates a delete button element for a cart product.
+ * @return {HTMLElement} deleteButton - The created delete button element.
+ */
 function createDeleteButton() {
     const deleteButton = document.createElement("div");
     const deleteLabel = createProductElement("p", "Supprimer", "deleteItem");
@@ -117,12 +160,19 @@ function createDeleteButton() {
     return deleteButton;
 }
 
+/**
+ * Appends cart products to the container element.
+ * @param {Array<HTMLElement>} cartProducts - The cart product elements to append.
+ */
 function appendCartProducts(cartProducts) {
     const productsContainer = document.querySelector("#cart__items");
 
     productsContainer.append(...cartProducts);
 }
 
+/**
+ * Handles the click event for the delete buttons.
+ */
 function handleDeleteButtons() {
     const removeButtons = document.querySelectorAll(".deleteItem");
 
@@ -131,6 +181,9 @@ function handleDeleteButtons() {
     }
 }
 
+/**
+ * Removes a product from the DOM and local storage and sets totals accordingly.
+ */
 function removeCartProduct() {
     const cartProduct = this.closest("article");
 
@@ -141,10 +194,18 @@ function removeCartProduct() {
     }
 }
 
+/**
+ * Removes a product from the DOM.
+ * @param {HTMLElement} cartProduct - The cart product to be removed.
+ */
 function removeFromDom(cartProduct) {
     cartProduct.remove();
 }
 
+/**
+ * Removes a product from local storage.
+ * @param {HTMLElement} cartProduct - The cart product to be removed.
+ */
 function removeFromStorage(cartProduct) {
     const storedProducts = getStorageData();
     const updatedStorage = [];
@@ -158,6 +219,9 @@ function removeFromStorage(cartProduct) {
     setStorageData(updatedStorage);
 }
 
+/**
+ * Handles the change event for the quantity input elements.
+ */
 function handleQuantityInputs() {
     const quantityInputs = document.querySelectorAll(".itemQuantity");
 
@@ -177,6 +241,10 @@ function handleQuantityInputs() {
     }
 }
 
+/**
+ * Updates the quantity of a product in the cart.
+ * @param {HTMLInputElement} input - The input element representing the quantity of the product to update.
+ */
 function updateCartQuantity(input) {
     const id = input.closest("article").dataset.id;
     const color = input.closest("article").dataset.color;
@@ -186,6 +254,14 @@ function updateCartQuantity(input) {
     setStorageData(updatedStorage);
 }
 
+/**
+ * Updates the storage data.
+ * @param {Object} product - The data of the product to update.
+ * @param {string} product.id - The id of the product.
+ * @param {string} product.color - The color of the product.
+ * @param {string} product.quantity - The quantity of the product.
+ * @returns {Array<Object>} - The updated storage data.
+ */
 function updateStorage({ id, color, quantity }) {
     const storedProducts = getStorageData();
     const newProduct = { id, color, quantity };
@@ -202,6 +278,9 @@ function updateStorage({ id, color, quantity }) {
     return updatedStorage;
 }
 
+/**
+ * Sets total quantity of items and total price of the cart.
+ */
 function setTotals() {
     const quantityInputs = document.querySelectorAll(".itemQuantity");
     const totalQuantityElement = document.querySelector("#totalQuantity");
@@ -214,6 +293,11 @@ function setTotals() {
     totalPriceElement.textContent = totalPrice.toString();
 }
 
+/**
+ * Calculates the total quantity of items in the cart.
+ * @param {NodeList<HTMLInputElement>} quantityInputs - The NodeList of quantity input elements.
+ * @returns {number} The total quantity of items in the cart.
+ */
 function calculateTotalQuantity(quantityInputs) {
     let totalQuantity = 0;
 
@@ -224,6 +308,11 @@ function calculateTotalQuantity(quantityInputs) {
     return totalQuantity;
 }
 
+/**
+ * Calculates the total price of the cart.
+ * @param {NodeList<HTMLInputElement>} quantityInputs - The NodeList of quantity input elements.
+ * @return {number} The total price of the cart.
+ */
 function calculateTotalPrice(quantityInputs) {
     let totalPrice = 0;
 
@@ -237,6 +326,9 @@ function calculateTotalPrice(quantityInputs) {
     return totalPrice;
 }
 
+/**
+ * Handles the validation and submission of the order form.
+ */
 function handleOrderForm() {
     const orderForm = document.forms[0];
     const orderInputs = Array.from(orderForm.elements);
@@ -252,6 +344,9 @@ function handleOrderForm() {
     checkValidtyOnSubmit(orderForm, orderFields);
 }
 
+/**
+ * Sets a pattern for firstname and lastname fields to prevent numbers.
+ */
 function setNoNumberPattern() {
     const firstName = document.querySelector("#firstName");
     const lastName = document.querySelector("#lastName");
@@ -261,6 +356,10 @@ function setNoNumberPattern() {
     lastName.setAttribute("pattern", noNumberPattern);
 }
 
+/**
+ * Checks if the cart is empty when an input element is focused.
+ * @param {Array<HTMLInputElement>} inputs - The input elements of the form.
+ */
 function isCartEmpty(inputs) {
     for (let input of inputs) {
         input.addEventListener("focus", function () {
@@ -274,6 +373,10 @@ function isCartEmpty(inputs) {
     }
 }
 
+/**
+ * Handles the input event for the form inputs to be filled by the user.
+ * @param {Array<HTMLInputElement>} inputs - The input elements to be filled by the user.
+ */
 function checkValidityOnInput(inputs) {
     for (let input of inputs) {
         input.addEventListener("input", function () {
@@ -286,6 +389,10 @@ function checkValidityOnInput(inputs) {
     }
 }
 
+/**
+ * Displays an error message based on the input validation state.
+ * @param {HTMLInputElement} input - The input element to display the error for.
+ */
 function displayInputError(input) {
     const inputErrorElement = input.nextElementSibling;
 
@@ -302,6 +409,11 @@ function displayInputError(input) {
     }
 }
 
+/**
+ * Handles the submit event for the form element.
+ * @param {HTMLElement} form - The form element to add the event listener to.
+ * @param {Array<HTMLInputElement>} inputs - The input elements to be filled by the user.
+ */
 function checkValidtyOnSubmit(form, inputs) {
     form.addEventListener("submit", function (event) {
         let isFormValid = true;
@@ -320,6 +432,12 @@ function checkValidtyOnSubmit(form, inputs) {
     });
 }
 
+/**
+ * Submits the given order form and sends the form data to server.
+ * Then redirects the user to the confirmation page with the order ID.
+ * @async
+ * @param {HTMLFormElement} form - The form element to be submitted.
+ */
 async function submitOrderForm(form) {
     const orderData = createOrderData(form);
     const { orderId } = await postOrderData(orderData);
@@ -328,6 +446,11 @@ async function submitOrderForm(form) {
     redirectToNewPage("confirmation.html", { orderId });
 }
 
+/**
+ * Creates an order data object from a form element.
+ * @param {HTMLFormElement} form - The form element to extract data from.
+ * @returns {Object} - The order data.
+ */
 function createOrderData(form) {
     const storedProducts = getStorageData();
     const orderProductIds = storedProducts.map(storedProduct => storedProduct.id);
@@ -344,6 +467,12 @@ function createOrderData(form) {
     return orderData;
 }
 
+/**
+ * Sends a POST request to the server with the provided order data.
+ * @async
+ * @param {Object} data - The order data to send to the server.
+ * @return {Promise<Object>} - The server's response, containing the order ID.
+ */
 async function postOrderData(data) {
     const options = {
         method: "POST",

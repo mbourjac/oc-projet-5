@@ -1,3 +1,7 @@
+/**
+ * Alerts the user of any errors with the quantity input field.
+ * @param {HTMLInputElement} input - The input element being checked for validity.
+ */
 export function alertQuantityError(input) {
     switch (true) {
         case input.validity.valueMissing:

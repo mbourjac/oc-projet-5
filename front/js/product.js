@@ -6,9 +6,9 @@ import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
 import { isSameProduct } from "./modules/is-same-product.js";
 
-populateProductPage();
+buildProductPage();
 
-async function populateProductPage() {
+async function buildProductPage() {
     const productId = getUrlParameter("id");
     const productData = await fetchData(`products/${productId}`);
 
@@ -18,12 +18,21 @@ async function populateProductPage() {
     handleCartButton(productData);
 }
 
+/**
+ * Sets the title of the page with the name of the product.
+ * @param {Object} productData - The data of the product.
+ * @param {string} productData.name - The name of the product.
+ */
 function setPageTitle({ name }) {
     const pageTitle = document.querySelector("title");
 
     pageTitle.textContent = name;
 }
 
+/**
+ * Populates the product item with the data provided.
+ * @param {Object} productData - The data of the product to be displayed.
+ */
 function populateProductItem(productData) {
     const productContainer = document.querySelector(".item__img");
     const productImage = createProductImage(productData);
@@ -33,6 +42,13 @@ function populateProductItem(productData) {
     appendColorOptions(productData);
 }
 
+/**
+ * Sets the text content of the name, price and description elements.
+ * @param {Object} productData - The product data.
+ * @param {string} productData.name - The name of the product.
+ * @param {string} productData.price - The price of the product.
+ * @param {string} productData.description - The description of the product.
+ */
 function setProductInformation({ name, price, description }) {
     const productTitle = document.querySelector("#title");
     const productPrice = document.querySelector("#price");
@@ -43,6 +59,11 @@ function setProductInformation({ name, price, description }) {
     productDescription.textContent = description;
 }
 
+/**
+ * Appends option elements to a select element with specific color values.
+ * @param {Object} productData - The product data.
+ * @param {Array<string>} productData.colors - An array of color values.
+ */
 function appendColorOptions({ colors }) {
     const colorsSelect = document.querySelector("#colors");
     const colorOptions = colors.map(createColorOption);
@@ -50,6 +71,11 @@ function appendColorOptions({ colors }) {
     colorsSelect.append(...colorOptions);
 }
 
+/**
+ * Creates an option element for a select element.
+ * @param {string} color - The color value and text content for the option element.
+ * @returns {HTMLOptionElement} - The created option element.
+ */
 function createColorOption(color) {
     const colorOption = document.createElement("option");
 
@@ -59,6 +85,9 @@ function createColorOption(color) {
     return colorOption;
 }
 
+/**
+ * Handles the change event for the quantity input element.
+ */
 function handleQuantityInput() {
     const quantityInput = document.querySelector("#quantity");
 
@@ -72,12 +101,17 @@ function handleQuantityInput() {
     });
 }
 
+/**
+ * Handles the click event for the add to cart button.
+ * @param {Object} productData - The data of the product.
+ * @param {string} productData.name - The name of the product.
+ */
 function handleCartButton({ name }) {
     const cartButton = document.querySelector("#addToCart");
     
     cartButton.addEventListener("click", function () {
-        const colorsSelect = document.querySelector("#colors"); /* déclarer variable dans populateProductPage() ? */
-        const quantityInput = document.querySelector("#quantity"); /* déclarer variable dans populateProductPage() ? */
+        const colorsSelect = document.querySelector("#colors");
+        const quantityInput = document.querySelector("#quantity");
         const color = colorsSelect.value;
         const quantity = +quantityInput.value;
         const errorMessage = checkSubmitErrors(color, quantity);
@@ -91,6 +125,12 @@ function handleCartButton({ name }) {
     });
 }
 
+/**
+ * Checks for errors when the user clicks the add to cart button.
+ * @param {string} color - The selected color.
+ * @param {number} quantity - The selected quantity.
+ * @returns {string} Error message if there is an error, otherwise null.
+ */
 function checkSubmitErrors(color, quantity) {
     switch (true) {
         case color === "" && quantity === 0:
@@ -104,6 +144,13 @@ function checkSubmitErrors(color, quantity) {
     }
 }
 
+/**
+* Alerts a message with the added product name, color, and quantity.
+* @param {Object} productData - The data for the added product.
+* @param {string} productData.name - The name of the added product.
+* @param {string} productData.color - The color of the added product.
+* @param {number} productData.quantity - The quantity of the added product.
+*/
 function alertAddedProduct({ name, color, quantity }) {
     let addedMessage = `Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire.`;
 
@@ -114,6 +161,11 @@ function alertAddedProduct({ name, color, quantity }) {
     }
 }
 
+/**
+ * Adds a product to the cart.
+ * @param {string} color - The color of the product.
+ * @param {number} quantity - The quantity of the product.
+ */
 function addToCart(color, quantity) {
     const id = getUrlParameter("id");
     const updatedStorage = addToStorage({ id, color, quantity });
@@ -121,6 +173,14 @@ function addToCart(color, quantity) {
     setStorageData(updatedStorage);
 }
 
+/**
+ * Adds a product to local storage.
+ * @param {Object} product - The data of the product to add to local storage.
+ * @param {string} product.id - The id of the product.
+ * @param {string} product.color - The color of the product.
+ * @param {number} product.quantity - The quantity of the product.
+ * @returns {Array<Object>} - The updated storage data.
+ */
 function addToStorage({ id, color, quantity }) {
     const storedProducts = getStorageData();
     const newProduct = { id, color, quantity };
