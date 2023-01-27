@@ -7,14 +7,14 @@ import { setStorageData } from "./modules/set-storage-data.js";
 import { isSameProduct } from "./modules/is-same-product.js";
 import { redirectToNewPage } from "./modules/redirect-to-new-page.js";
 
-createDynamicCart();
+buildCartPage();
 
-async function createDynamicCart() {
+async function buildCartPage() {
     const storedProducts = getStorageData();
-    const cartProduct = await Promise.all(storedProducts.map(createCartProduct));
+    const cartProducts = await Promise.all(storedProducts.map(createCartProduct));
 
-    appendCartProduct(cartProduct);
-    handleRemoveButtons();
+    appendCartProducts(cartProducts);
+    handleDeleteButtons();
     handleQuantityInputs();
     setTotals();
     handleOrderForm();
@@ -24,27 +24,27 @@ async function createCartProduct(storedProduct) {
     const { id, color, quantity } = storedProduct;
     const productData = await fetchData(`products/${id}`);
 
-    const productArticle = document.createElement("article");
-    const productImageContainer = createProductImageContainer(productData);
+    const cartProduct = document.createElement("article");
+    const imageContainer = createImageContainer(productData);
     const productContent = createProductContent(productData, color, quantity);
 
-    productArticle.classList.add("cart__item");
-    productArticle.dataset.id = id;
-    productArticle.dataset.color = color;
-    productArticle.dataset.price = productData.price;
-    productArticle.append(productImageContainer, productContent);
+    cartProduct.classList.add("cart__item");
+    cartProduct.dataset.id = id;
+    cartProduct.dataset.color = color;
+    cartProduct.dataset.price = productData.price;
+    cartProduct.append(imageContainer, productContent);
 
-    return productArticle;
+    return cartProduct;
 }
 
-function createProductImageContainer(productData) {
-    const productImageContainer = document.createElement("div");
+function createImageContainer(productData) {
+    const imageContainer = document.createElement("div");
     const productImage = createProductImage(productData);
 
-    productImageContainer.classList.add("cart__item__img");
-    productImageContainer.append(productImage);
+    imageContainer.classList.add("cart__item__img");
+    imageContainer.append(productImage);
 
-    return productImageContainer;
+    return imageContainer;
 }
 
 function createProductContent(productData, color, quantity) {
@@ -73,57 +73,57 @@ function createProductDescription(productData, color) {
 
 function createProductSettings(quantity) {
     const productSettings = document.createElement("div");
-    const productQuantityContainer = createProductQuantityContainer(quantity);
-    const productDeleteContainer = createProductDeleteContainer();
+    const quantityContainer = createQuantityContainer(quantity);
+    const deleteButton = createDeleteButton();
 
     productSettings.classList.add("cart__item__content__settings");
-    productSettings.append(productQuantityContainer, productDeleteContainer);
+    productSettings.append(quantityContainer, deleteButton);
 
     return productSettings;
 }
 
-function createProductQuantityContainer(quantity) {
-    const productQuantityContainer = document.createElement("div");
-    const productQuantityText = createProductElement("p", "Qté : ");
-    const productQuantityInput = createQuantityInput(quantity);
+function createQuantityContainer(quantity) {
+    const quantityContainer = document.createElement("div");
+    const quantityLabel = createProductElement("p", "Qté : ");
+    const quantityInput = createQuantityInput(quantity);
 
-    productQuantityContainer.classList.add("cart__item__content__settings__quantity");
-    productQuantityContainer.append(productQuantityText, productQuantityInput);
+    quantityContainer.classList.add("cart__item__content__settings__quantity");
+    quantityContainer.append(quantityLabel, quantityInput);
 
-    return productQuantityContainer;
+    return quantityContainer;
 }
 
 function createQuantityInput(quantity) {
-    const productQuantityInput = document.createElement("input");
+    const quantityInput = document.createElement("input");
 
-    productQuantityInput.classList.add("itemQuantity");
-    productQuantityInput.type = "number";
-    productQuantityInput.name = "itemQuantity";
-    productQuantityInput.min = "1";
-    productQuantityInput.max = "100";
-    productQuantityInput.value = quantity;
-    productQuantityInput.required = true;
+    quantityInput.classList.add("itemQuantity");
+    quantityInput.type = "number";
+    quantityInput.name = "itemQuantity";
+    quantityInput.min = "1";
+    quantityInput.max = "100";
+    quantityInput.value = quantity;
+    quantityInput.required = true;
 
-    return productQuantityInput;
+    return quantityInput;
 }
 
-function createProductDeleteContainer() {
-    const productDeleteContainer = document.createElement("div");
-    const productDeleteText = createProductElement("p", "Supprimer", "deleteItem");
+function createDeleteButton() {
+    const deleteButton = document.createElement("div");
+    const deleteLabel = createProductElement("p", "Supprimer", "deleteItem");
 
-    productDeleteContainer.classList.add("cart__item__content__settings__delete");
-    productDeleteContainer.append(productDeleteText);
+    deleteButton.classList.add("cart__item__content__settings__delete");
+    deleteButton.append(deleteLabel);
 
-    return productDeleteContainer;
+    return deleteButton;
 }
 
-function appendCartProduct(cartProduct) {
+function appendCartProducts(cartProducts) {
     const productsContainer = document.querySelector("#cart__items");
 
-    productsContainer.append(...cartProduct);
+    productsContainer.append(...cartProducts);
 }
 
-function handleRemoveButtons() {
+function handleDeleteButtons() {
     const removeButtons = document.querySelectorAll(".deleteItem");
 
     for (const removeButton of removeButtons) {
@@ -280,13 +280,13 @@ function checkValidityOnInput(inputs) {
             if (input.validity.valid) {
                 input.nextElementSibling.textContent = "";
             } else {
-                showInputError(input);
+                displayInputError(input);
             }
         });
     }
 }
 
-function showInputError(input) {
+function displayInputError(input) {
     const inputErrorElement = input.nextElementSibling;
 
     switch (true) {
@@ -310,7 +310,7 @@ function checkValidtyOnSubmit(form, inputs) {
         for (let input of inputs) {
             if (!input.validity.valid) {
                 isFormValid = false;
-                showInputError(input);
+                displayInputError(input);
             }
         }
 

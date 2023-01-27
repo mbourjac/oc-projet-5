@@ -2,27 +2,23 @@ import { fetchData } from "./modules/fetch-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { createProductElement } from "./modules/create-product-element.js";
 
-createDynamicProducts();
+buildHomepage();
 
-async function createDynamicProducts() {
+async function buildHomepage() {
     const productsData = await fetchData("products");
+    const productItems = productsData.map(createProductItem);
 
-    for (const productData of productsData) {
-        const productsContainer = document.querySelector(".items");
-        const productCard = createProductCard(productData);
-
-        productsContainer.append(productCard);
-    }
+    appendProductItems(productItems)
 }
 
-function createProductCard(productData) {
-    const productCard = document.createElement("a");
+function createProductItem(productData) {
+    const productItem = document.createElement("a");
     const productArticle = createProductArticle(productData);
 
-    productCard.href = `./product.html?id=${productData._id}`;
-    productCard.append(productArticle);
+    productItem.href = `./product.html?id=${productData._id}`;
+    productItem.append(productArticle);
 
-    return productCard;
+    return productItem;
 }
 
 function createProductArticle(productData) {
@@ -35,4 +31,10 @@ function createProductArticle(productData) {
     productArticle.append(productImage, productTitle, productDescription);
 
     return productArticle;
+}
+
+function appendProductItems(productItems) {
+    const productsContainer = document.querySelector(".items");
+
+    productsContainer.append(...productItems);
 }
