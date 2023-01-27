@@ -270,7 +270,7 @@ function updateStorage({ id, color, quantity }) {
  * Sets total quantity of items and total price of the cart.
  */
 function setTotals() {
-    const quantityInputs = document.querySelectorAll(".itemQuantity");
+    const quantityInputs = Array.from(document.querySelectorAll(".itemQuantity"));
     const totalQuantityElement = document.querySelector("#totalQuantity");
     const totalPriceElement = document.querySelector("#totalPrice");
 
@@ -283,7 +283,7 @@ function setTotals() {
 
 /**
  * Calculates the total quantity of items in the cart.
- * @param {NodeList<HTMLInputElement>} quantityInputs - The NodeList of quantity input elements.
+ * @param {Array<HTMLInputElement>} quantityInputs - An array of quantity input elements.
  * @returns {number} The total quantity of items in the cart.
  */
 function calculateTotalQuantity(quantityInputs) {
@@ -298,7 +298,7 @@ function calculateTotalQuantity(quantityInputs) {
 
 /**
  * Calculates the total price of the cart.
- * @param {NodeList<HTMLInputElement>} quantityInputs - The NodeList of quantity input elements.
+ * @param {Array<HTMLInputElement>} quantityInputs - An array of quantity input elements.
  * @return {number} The total price of the cart.
  */
 function calculateTotalPrice(quantityInputs) {
