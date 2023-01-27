@@ -185,30 +185,30 @@ function handleDeleteButtons() {
  * Removes a product from the DOM and local storage and sets totals accordingly.
  */
 function removeCartProduct() {
-    const cartProduct = this.closest("article");
+    const discardedProduct = this.closest("article");
 
     if (window.confirm("Voulez-vous supprimer cet article ?")) {
-        removeFromDom(cartProduct);
-        removeFromStorage(cartProduct);
+        removeFromDom(discardedProduct);
+        removeFromStorage(discardedProduct);
         setTotals();
     }
 }
 
 /**
  * Removes a product from the DOM.
- * @param {HTMLElement} cartProduct - The cart product to be removed.
+ * @param {HTMLElement} discardedProduct - The cart product to be removed.
  */
-function removeFromDom(cartProduct) {
-    cartProduct.remove();
+function removeFromDom(discardedProduct) {
+    discardedProduct.remove();
 }
 
 /**
  * Removes a product from local storage.
- * @param {HTMLElement} cartProduct - The cart product to be removed.
+ * @param {HTMLElement} discardedProduct - The cart product to be removed.
  */
-function removeFromStorage(cartProduct) {
+function removeFromStorage(discardedProduct) {
     const storedProducts = getStorageData();
-    let updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, cartProduct.dataset));
+    let updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, discardedProduct.dataset));
 
     setStorageData(updatedStorage);
 }
