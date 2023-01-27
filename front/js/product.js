@@ -152,7 +152,7 @@ function checkSubmitErrors(color, quantity) {
 * @param {number} productData.quantity - The quantity of the added product.
 */
 function alertAddedProduct({ name, color, quantity }) {
-    let addedMessage = `Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire.`;
+    const addedMessage = `Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire.`;
 
     if (quantity === 1) {
         alert(addedMessage);
