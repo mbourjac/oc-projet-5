@@ -208,13 +208,7 @@ function removeFromDom(cartProduct) {
  */
 function removeFromStorage(cartProduct) {
     const storedProducts = getStorageData();
-    const updatedStorage = [];
-
-    for (const storedProduct of storedProducts) {
-        if (!isSameProduct(storedProduct, cartProduct.dataset)) {
-            updatedStorage.push(storedProduct);
-        }
-    }
+    let updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, cartProduct.dataset));
 
     setStorageData(updatedStorage);
 }
