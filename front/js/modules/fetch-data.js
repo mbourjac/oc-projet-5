@@ -44,9 +44,9 @@ export async function fetchData(resourcePath, options) {
  */
 function handleHttpError(response) {
     switch (response.status) {
-        case 404:
+        case NotFoundError.status:
             throw new NotFoundError();
-        case 500:
+        case InternalServorError.status:
             throw new InternalServorError();
         default:
             throw new HttpError(response.statusText, response.status);
@@ -73,9 +73,13 @@ class HttpError extends Error {
  */
 class NotFoundError extends HttpError {
     constructor() {
-        super("Désolé, ce produit est introuvable.", 404);
+        super("Désolé, ce produit est introuvable.", NotFoundError.status);
     }
+
+    static status = 404;
 }
+
+const notFoundError = { status: 404,}
 
 /**
  * InternalServerError class represents an error that occurs when a server error is encountered.
@@ -83,6 +87,8 @@ class NotFoundError extends HttpError {
  */
 class InternalServorError extends HttpError {
     constructor() {
-        super("Désolé, nous rencontrons un problème avec le serveur.", 500);
+        super("Désolé, nous rencontrons un problème avec le serveur.", InternalServorError.status);
     }
+
+    static status = 500;
 }
