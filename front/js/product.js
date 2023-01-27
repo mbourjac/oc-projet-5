@@ -184,14 +184,11 @@ function addToCart(color, quantity) {
 function addToStorage({ id, color, quantity }) {
     const storedProducts = getStorageData();
     const newProduct = { id, color, quantity };
-    let updatedStorage = [];
+    const sameProduct = storedProducts.find(storedProduct => isSameProduct(storedProduct, newProduct));
+    const updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, newProduct));
 
-    for (let storedProduct of storedProducts) {
-        if (isSameProduct(newProduct, storedProduct)) {
-            newProduct.quantity += storedProduct.quantity;
-        } else {
-            updatedStorage.push(storedProduct);
-        }
+    if (sameProduct) {
+        newProduct.quantity += sameProduct.quantity;
     }
 
     updatedStorage.push(newProduct);
