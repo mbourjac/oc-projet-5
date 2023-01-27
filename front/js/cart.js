@@ -287,13 +287,10 @@ function setTotals() {
  * @returns {number} The total quantity of items in the cart.
  */
 function calculateTotalQuantity(quantityInputs) {
-    let totalQuantity = 0;
-
-    for (const quantityInput of quantityInputs) {
-        totalQuantity += +quantityInput.value;
-    }
-
-    return totalQuantity;
+    return quantityInputs.reduce(
+        (totalQuantity, quantityInput) => totalQuantity + +quantityInput.value,
+        0
+    );
 }
 
 /**
@@ -302,16 +299,12 @@ function calculateTotalQuantity(quantityInputs) {
  * @return {number} The total price of the cart.
  */
 function calculateTotalPrice(quantityInputs) {
-    let totalPrice = 0;
-
-    for (const quantityInput of quantityInputs) {
+    return quantityInputs.reduce((totalPrice, quantityInput) => {
         const productQuantity = +quantityInput.value;
         const productPrice = +quantityInput.closest("article").dataset.price;
 
-        totalPrice += productQuantity * productPrice;
-    }
-
-    return totalPrice;
+        return totalPrice + productQuantity * productPrice;
+    }, 0);
 }
 
 /**
