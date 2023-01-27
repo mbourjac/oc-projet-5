@@ -208,7 +208,7 @@ function removeFromDom(discardedProduct) {
  */
 function removeFromStorage(discardedProduct) {
     const storedProducts = getStorageData();
-    let updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, discardedProduct.dataset));
+    const updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, discardedProduct.dataset));
 
     setStorageData(updatedStorage);
 }
@@ -259,7 +259,7 @@ function updateCartQuantity(input) {
 function updateStorage({ id, color, quantity }) {
     const storedProducts = getStorageData();
     const updatedProduct = { id, color, quantity };
-    let updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, updatedProduct));
+    const updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, updatedProduct));
 
     updatedStorage.push(updatedProduct);
 
@@ -349,7 +349,7 @@ function setNoNumberPattern() {
  * @param {Array<HTMLInputElement>} inputs - The input elements of the form.
  */
 function isCartEmpty(inputs) {
-    for (let input of inputs) {
+    for (const input of inputs) {
         input.addEventListener("focus", function () {
             const storedProducts = getStorageData();
 
@@ -366,7 +366,7 @@ function isCartEmpty(inputs) {
  * @param {Array<HTMLInputElement>} inputs - The input elements to be filled by the user.
  */
 function checkValidityOnInput(inputs) {
-    for (let input of inputs) {
+    for (const input of inputs) {
         input.addEventListener("input", function () {
             if (input.validity.valid) {
                 input.nextElementSibling.textContent = "";
@@ -407,7 +407,7 @@ function checkValidtyOnSubmit(form, inputs) {
         let isFormValid = true;
         event.preventDefault();
 
-        for (let input of inputs) {
+        for (const input of inputs) {
             if (!input.validity.valid) {
                 isFormValid = false;
                 displayInputError(input);
