@@ -258,16 +258,10 @@ function updateCartQuantity(input) {
  */
 function updateStorage({ id, color, quantity }) {
     const storedProducts = getStorageData();
-    const newProduct = { id, color, quantity };
-    let updatedStorage = [];
+    const updatedProduct = { id, color, quantity };
+    let updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, updatedProduct));
 
-    for (let storedProduct of storedProducts) {
-        if (!isSameProduct(newProduct, storedProduct)) {
-            updatedStorage.push(storedProduct);
-        }
-    }
-
-    updatedStorage.push(newProduct);
+    updatedStorage.push(updatedProduct);
 
     return updatedStorage;
 }
