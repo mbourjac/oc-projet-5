@@ -5,6 +5,8 @@ import { alertQuantityError } from "./modules/alert-quantity-error.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
 import { isSameProduct } from "./modules/is-same-product.js";
+import { getMatchIndex } from "./modules/get-match-index.js";
+import { replaceMatchedProduct } from "./modules/replace-matched-product.js";
 import { redirectToNewPage } from "./modules/redirect-to-new-page.js";
 
 buildCartPage();
@@ -259,11 +261,9 @@ function updateCartQuantity(input) {
 function updateStorage({ id, color, quantity }) {
     const storedProducts = getStorageData();
     const updatedProduct = { id, color, quantity };
-    const updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, updatedProduct));
+    const matchIndex = getMatchIndex(storedProducts, updatedProduct);
 
-    updatedStorage.push(updatedProduct);
-
-    return updatedStorage;
+    return replaceMatchedProduct(storedProducts, updatedProduct, matchIndex);
 }
 
 /**
