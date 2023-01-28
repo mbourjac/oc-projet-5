@@ -5,6 +5,6 @@
  * @param {number} - The index of the product to replace.
  * @return {Array<Object>} - The updated array of products.
  */
-export function replaceupdatedProductedProduct(storedProducts, updatedProduct, matchIndex) {
+export function replaceMatchedProduct(storedProducts, updatedProduct, matchIndex) {
     return [...storedProducts.slice(0, matchIndex), updatedProduct, ...storedProducts.slice(matchIndex + 1)];
 }
