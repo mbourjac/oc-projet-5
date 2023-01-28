@@ -4,7 +4,8 @@ import { createProductImage } from "./modules/create-product-image.js";
 import { alertQuantityError } from "./modules/alert-quantity-error.js";
 import { getStorageData } from "./modules/get-storage-data.js";
 import { setStorageData } from "./modules/set-storage-data.js";
-import { isSameProduct } from "./modules/is-same-product.js";
+import { getMatchIndex } from "./modules/get-match-index.js";
+import { replaceMatchedProduct } from "./modules/replace-matched-product.js";
 
 buildProductPage();
 
@@ -184,14 +185,13 @@ function addToCart(color, quantity) {
 function addToStorage({ id, color, quantity }) {
     const storedProducts = getStorageData();
     const newProduct = { id, color, quantity };
-    const sameProduct = storedProducts.find(storedProduct => isSameProduct(storedProduct, newProduct));
-    const updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, newProduct));
+    const matchIndex = getMatchIndex(storedProducts, newProduct);
 
-    if (sameProduct) {
-        newProduct.quantity += sameProduct.quantity;
-    }
+    if (matchIndex === -1) {
+        return [...storedProducts, newProduct];
+    } 
 
-    updatedStorage.push(newProduct);
-
-    return updatedStorage;
+    newProduct.quantity += storedProducts[matchIndex].quantity;
+    
+    return replaceMatchedProduct(storedProducts, newProduct, matchIndex);
 }
