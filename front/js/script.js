@@ -8,7 +8,7 @@ async function buildHomepage() {
     const productsData = await fetchData("products");
     const productItems = productsData.map(createProductItem);
 
-    appendProductItems(productItems)
+    appendProductItems(productItems);
 }
 
 /**

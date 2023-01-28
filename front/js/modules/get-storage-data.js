@@ -3,11 +3,11 @@
  * @returns {Array<Object>} The stored products in the local storage, as an array of JSON objects.
  */
 export function getStorageData() {
-    let storedProducts = localStorage.getItem("storedProducts");
+    const storedProducts = localStorage.getItem("storedProducts");
 
-    if (storedProducts == null) {
+    if (storedProducts === null) {
         return [];
-    } else {
-        return JSON.parse(storedProducts);
     }
+
+    return JSON.parse(storedProducts);
 }

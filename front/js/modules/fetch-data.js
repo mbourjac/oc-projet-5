@@ -27,7 +27,7 @@ export async function fetchData(resourcePath, options) {
             alert(error.message);
             console.error(`${error.name}: status ${error.status}`);
         } else {
-            alert("Désolé, une erreur est survenue.")
+            alert("Désolé, une erreur est survenue.");
             console.error(error);
         }
 
@@ -78,8 +78,6 @@ class NotFoundError extends HttpError {
 
     static status = 404;
 }
-
-const notFoundError = { status: 404,}
 
 /**
  * InternalServerError class represents an error that occurs when a server error is encountered.

@@ -93,7 +93,7 @@ function handleQuantityInput() {
     const quantityInput = document.querySelector("#quantity");
 
     quantityInput.required = true;
-    
+
     quantityInput.addEventListener("change", function () {
         if (!this.validity.valid) {
             alertQuantityError(this);
@@ -109,7 +109,7 @@ function handleQuantityInput() {
  */
 function handleCartButton({ name }) {
     const cartButton = document.querySelector("#addToCart");
-    
+
     cartButton.addEventListener("click", function () {
         const colorsSelect = document.querySelector("#colors");
         const quantityInput = document.querySelector("#quantity");
@@ -158,7 +158,7 @@ function alertAddedProduct({ name, color, quantity }) {
     if (quantity === 1) {
         alert(addedMessage);
     } else {
-        alert(addedMessage.replace(".","s."));
+        alert(addedMessage.replace(".", "s."));
     }
 }
 
@@ -170,7 +170,7 @@ function alertAddedProduct({ name, color, quantity }) {
 function addToCart(color, quantity) {
     const id = getUrlParameter("id");
     const updatedStorage = addToStorage({ id, color, quantity });
-    
+
     setStorageData(updatedStorage);
 }
 
@@ -189,9 +189,9 @@ function addToStorage({ id, color, quantity }) {
 
     if (matchIndex === -1) {
         return [...storedProducts, newProduct];
-    } 
+    }
 
     newProduct.quantity += storedProducts[matchIndex].quantity;
-    
+
     return replaceMatchedProduct(storedProducts, newProduct, matchIndex);
 }

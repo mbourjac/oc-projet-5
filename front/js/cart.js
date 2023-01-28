@@ -210,7 +210,7 @@ function removeFromDom(discardedProduct) {
  */
 function removeFromStorage(discardedProduct) {
     const storedProducts = getStorageData();
-    const updatedStorage = storedProducts.filter(storedProduct => !isSameProduct(storedProduct, discardedProduct.dataset));
+    const updatedStorage = storedProducts.filter((storedProduct) => !isSameProduct(storedProduct, discardedProduct.dataset));
 
     setStorageData(updatedStorage);
 }
@@ -434,7 +434,7 @@ async function submitOrderForm(form) {
  */
 function createOrderData(form) {
     const storedProducts = getStorageData();
-    const orderProductIds = storedProducts.map(storedProduct => storedProduct.id);
+    const orderProductIds = storedProducts.map((storedProduct) => storedProduct.id);
     const orderFormData = new FormData(form);
     const orderData = {
         contact: {},

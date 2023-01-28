@@ -5,7 +5,7 @@
  */
 export function redirectToNewPage(page, parametersObject) {
     const newPageUrl = setNewPageUrl(page, parametersObject);
-    
+
     window.location.assign(newPageUrl);
 }
 
