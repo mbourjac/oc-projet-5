@@ -429,16 +429,11 @@ function createOrderData(form) {
     const storedProducts = getStorageData();
     const orderProductIds = storedProducts.map(({ id }) => id);
     const orderFormData = new FormData(form);
-    const orderData = {
-        contact: {},
+
+    return {
+        contact: Object.fromEntries(orderFormData.entries()),
         products: orderProductIds,
     };
-
-    for (const [key, value] of orderFormData) {
-        orderData.contact[key] = value;
-    }
-
-    return orderData;
 }
 
 /**
