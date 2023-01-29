@@ -176,18 +176,18 @@ function addToCart(color, quantity) {
 
 /**
  * Adds a product to local storage.
- * @param {Object} newProduct - The product to add to local storage.
+ * @param {Object} chosenProduct - The product to add to local storage.
  * @returns {Array<Object>} - The updated storage data.
  */
-function addToStorage(newProduct) {
+function addToStorage(chosenProduct) {
     const storedProducts = getStorageData();
-    const matchIndex = getMatchIndex(storedProducts, newProduct);
+    const matchIndex = getMatchIndex(storedProducts, chosenProduct);
 
     if (matchIndex === -1) {
-        return [...storedProducts, newProduct];
+        return [...storedProducts, chosenProduct];
     }
 
-    newProduct.quantity += storedProducts[matchIndex].quantity;
+    chosenProduct.quantity += storedProducts[matchIndex].quantity;
 
-    return replaceMatchedProduct(storedProducts, newProduct, matchIndex);
+    return replaceMatchedProduct(storedProducts, chosenProduct, matchIndex);
 }
