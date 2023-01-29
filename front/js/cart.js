@@ -242,8 +242,7 @@ function handleQuantityInputs() {
  * @param {HTMLInputElement} input - The input element representing the quantity of the product to update.
  */
 function updateCartQuantity(input) {
-    const id = input.closest("article").dataset.id;
-    const color = input.closest("article").dataset.color;
+    const { id, color } = input.closest("article").dataset;
     const quantity = +input.value;
     const updatedStorage = updateStorage({ id, color, quantity });
 
@@ -252,15 +251,11 @@ function updateCartQuantity(input) {
 
 /**
  * Updates the storage data.
- * @param {Object} product - The data of the product to update.
- * @param {string} product.id - The id of the product.
- * @param {string} product.color - The color of the product.
- * @param {string} product.quantity - The quantity of the product.
+ * @param {Object} updatedProduct - The updated product replacing the matching one in local storage.
  * @returns {Array<Object>} - The updated storage data.
  */
-function updateStorage({ id, color, quantity }) {
+function updateStorage(updatedProduct) {
     const storedProducts = getStorageData();
-    const updatedProduct = { id, color, quantity };
     const matchIndex = getMatchIndex(storedProducts, updatedProduct);
 
     return replaceMatchedProduct(storedProducts, updatedProduct, matchIndex);
@@ -288,7 +283,7 @@ function setTotals() {
  */
 function calculateTotalQuantity(quantityInputs) {
     return quantityInputs.reduce(
-        (totalQuantity, quantityInput) => totalQuantity + +quantityInput.value,
+        (totalQuantity, { value }) => totalQuantity + +value,
         0
     );
 }
@@ -311,11 +306,9 @@ function calculateTotalPrice(quantityInputs) {
  * Handles the validation and submission of the order form.
  */
 function handleOrderForm() {
-    const orderForm = document.forms[0];
-    const orderInputs = Array.from(orderForm.elements);
-    const orderFields = orderInputs.filter(
-        (inputElement) => inputElement.type !== "submit"
-    );
+    const [orderForm] = document.forms;
+    const orderInputs = [...orderForm.elements];
+    const orderFields = orderInputs.filter(({ type }) => type !== "submit");
 
     orderForm.setAttribute("novalidate", true);
 
@@ -434,7 +427,7 @@ async function submitOrderForm(form) {
  */
 function createOrderData(form) {
     const storedProducts = getStorageData();
-    const orderProductIds = storedProducts.map((storedProduct) => storedProduct.id);
+    const orderProductIds = storedProducts.map(({ id }) => id);
     const orderFormData = new FormData(form);
     const orderData = {
         contact: {},

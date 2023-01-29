@@ -176,15 +176,11 @@ function addToCart(color, quantity) {
 
 /**
  * Adds a product to local storage.
- * @param {Object} product - The data of the product to add to local storage.
- * @param {string} product.id - The id of the product.
- * @param {string} product.color - The color of the product.
- * @param {number} product.quantity - The quantity of the product.
+ * @param {Object} newProduct - The product to add to local storage.
  * @returns {Array<Object>} - The updated storage data.
  */
-function addToStorage({ id, color, quantity }) {
+function addToStorage(newProduct) {
     const storedProducts = getStorageData();
-    const newProduct = { id, color, quantity };
     const matchIndex = getMatchIndex(storedProducts, newProduct);
 
     if (matchIndex === -1) {
