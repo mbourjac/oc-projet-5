@@ -6,7 +6,7 @@ import { redirectToNewPage } from "./redirect-to-new-page.js";
  * @async
  * @param {string} resourcePath - The resource path for the API endpoint.
  * @param {Object} [options] - The options for the fetch request.
- * @returns {Promise<Object>} - A promise that resolves to the data fetched from the API endpoint.
+ * @returns {Promise<Object|Array>} - A promise that resolves to the data fetched from the API endpoint.
  * @throws {HttpError} - If the HTTP response status is not ok.
  * @throws {Error} - If an error unrelated to the HTTP response status occurred during the fetch request.
  */
