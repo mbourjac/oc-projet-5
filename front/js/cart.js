@@ -81,11 +81,12 @@ function createProductContent(productData, color, quantity) {
 /**
  * Creates a container element for the product description.
  * @param {Object} productData - The data of the product.
+ * @param {string} productData.name - The name of the product.
+ * @param {string} productData.price - The price of the product.
  * @param {string} color - The color of the product.
  * @returns {HTMLElement} - The container element for the product description.
  */
-function createProductDescription(productData, color) {
-    const { name, price } = productData;
+function createProductDescription({ name, price }, color) {
     const productDescription = document.createElement("div");
     const productName = createProductElement("h2", name);
     const productColor = createProductElement("p", color);
