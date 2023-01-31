@@ -16,9 +16,9 @@ async function buildCartPage() {
     const cartProducts = await Promise.all(storedProducts.map(createCartProduct));
 
     appendCartProducts(cartProducts);
+    setTotals();
     handleDeleteButtons();
     handleQuantityInputs();
-    setTotals();
     handleOrderForm();
 }
 
@@ -391,8 +391,8 @@ function displayInputError(input) {
  */
 function checkValidtyOnSubmit(form, inputs) {
     form.addEventListener("submit", function (event) {
-        let isFormValid = true;
         event.preventDefault();
+        let isFormValid = true;
 
         for (const input of inputs) {
             if (!input.validity.valid) {

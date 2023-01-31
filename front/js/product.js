@@ -146,23 +146,6 @@ function checkSubmitErrors(color, quantity) {
 }
 
 /**
-* Alerts a message with the added product name, color, and quantity.
-* @param {Object} productData - The data for the added product.
-* @param {string} productData.name - The name of the added product.
-* @param {string} productData.color - The color of the added product.
-* @param {number} productData.quantity - The quantity of the added product.
-*/
-function alertAddedProduct({ name, color, quantity }) {
-    const addedMessage = `Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire.`;
-
-    if (quantity === 1) {
-        alert(addedMessage);
-    } else {
-        alert(addedMessage.replace(".", "s."));
-    }
-}
-
-/**
  * Adds a product to the cart.
  * @param {string} color - The color of the product.
  * @param {number} quantity - The quantity of the product.
@@ -183,11 +166,28 @@ function addToStorage(chosenProduct) {
     const storedProducts = getStorageData();
     const matchIndex = getMatchIndex(storedProducts, chosenProduct);
 
-    if (matchIndex === -1) {
-        return [...storedProducts, chosenProduct];
+    if (matchIndex !== -1) {
+        chosenProduct.quantity += storedProducts[matchIndex].quantity;
+
+        return replaceMatchedProduct(storedProducts, chosenProduct, matchIndex);
     }
 
-    chosenProduct.quantity += storedProducts[matchIndex].quantity;
+    return [...storedProducts, chosenProduct];
+}
 
-    return replaceMatchedProduct(storedProducts, chosenProduct, matchIndex);
+/**
+* Alerts a message with the added product name, color, and quantity.
+* @param {Object} productData - The data for the added product.
+* @param {string} productData.name - The name of the added product.
+* @param {string} productData.color - The color of the added product.
+* @param {number} productData.quantity - The quantity of the added product.
+*/
+function alertAddedProduct({ name, color, quantity }) {
+    const addedMessage = `Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire.`;
+
+    if (quantity === 1) {
+        alert(addedMessage);
+    } else {
+        alert(addedMessage.replace(".", "s."));
+    }
 }
