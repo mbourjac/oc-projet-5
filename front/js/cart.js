@@ -325,7 +325,7 @@ function handleOrderForm() {
 function setNoNumberPattern() {
     const firstName = document.querySelector("#firstName");
     const lastName = document.querySelector("#lastName");
-    const noNumberPattern = "^([^\\d]+)$";
+    const noNumberPattern = "^\\D+$";
 
     firstName.setAttribute("pattern", noNumberPattern);
     lastName.setAttribute("pattern", noNumberPattern);
