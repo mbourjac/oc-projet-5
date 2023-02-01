@@ -414,42 +414,49 @@ function checkValidtyOnSubmit(form, inputs) {
  * @param {HTMLFormElement} form - The form element to be submitted.
  */
 async function submitOrderForm(form) {
-    const orderData = createOrderData(form);
-    const { orderId } = await postOrderData(orderData);
+    const contact = createContactData(form);
+    const products = createProductsData();
+
+    const { orderId } = await postOrderData({ contact, products });
 
     /* localStorage.clear(); */
     redirectToNewPage("confirmation.html", { orderId });
 }
 
 /**
- * Creates an order data object from a form element.
+ * Creates a contact object from a form element.
  * @param {HTMLFormElement} form - The form element to extract data from.
- * @returns {Object} - The order data.
+ * @returns {Object} - The contact data.
  */
-function createOrderData(form) {
-    const storedProducts = getStorageData();
-    const orderProductIds = storedProducts.map(({ id }) => id);
+function createContactData(form) {
     const orderFormData = new FormData(form);
 
-    return {
-        contact: Object.fromEntries(orderFormData.entries()),
-        products: orderProductIds,
-    };
+    return Object.fromEntries(orderFormData.entries());
+}
+
+/**
+ * Creates an array of product ids from local storage.
+ * @returns {Array<string>} - The products data.
+ */
+function createProductsData() {
+    const storedProducts = getStorageData();
+
+    return storedProducts.map(({ id }) => id);
 }
 
 /**
  * Sends a POST request to the server with the provided order data.
  * @async
- * @param {Object} data - The order data to send to the server.
+ * @param {Object} orderData - The order data to send to the server.
  * @return {Promise<Object>} - The server's response, containing the order ID.
  */
-async function postOrderData(data) {
+async function postOrderData(orderData) {
     const options = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(orderData),
     };
 
     return fetchData("products/order", options);
