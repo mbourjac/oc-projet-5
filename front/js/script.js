@@ -2,9 +2,9 @@ import { fetchData } from "./modules/fetch-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { createProductElement } from "./modules/create-product-element.js";
 
-buildHomepage();
+createDynamicContent();
 
-async function buildHomepage() {
+async function createDynamicContent() {
     const productsData = await fetchData("products");
     const productItems = productsData.map(createProductItem);
 

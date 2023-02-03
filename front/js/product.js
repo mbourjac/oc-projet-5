@@ -7,9 +7,9 @@ import { setStorageData } from "./modules/set-storage-data.js";
 import { getMatchIndex } from "./modules/get-match-index.js";
 import { replaceMatchedProduct } from "./modules/replace-matched-product.js";
 
-buildProductPage();
+createDynamicContent();
 
-async function buildProductPage() {
+async function createDynamicContent() {
     const productId = getUrlParameter("id");
     const productData = await fetchData(`products/${productId}`);
 

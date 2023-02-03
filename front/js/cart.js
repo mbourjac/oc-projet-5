@@ -9,9 +9,9 @@ import { getMatchIndex } from "./modules/get-match-index.js";
 import { replaceMatchedProduct } from "./modules/replace-matched-product.js";
 import { redirectToNewPage } from "./modules/redirect-to-new-page.js";
 
-buildCartPage();
+createDynamicContent();
 
-async function buildCartPage() {
+async function createDynamicContent() {
     const storedProducts = getStorageData();
     const cartProducts = await Promise.all(storedProducts.map(createCartProduct));
 
