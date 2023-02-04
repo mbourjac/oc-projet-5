@@ -39,7 +39,6 @@ async function createCartProduct(storedProduct) {
     cartProduct.classList.add("cart__item");
     cartProduct.dataset.id = id;
     cartProduct.dataset.color = color;
-    cartProduct.dataset.price = productData.price;
     cartProduct.append(imageContainer, productContent);
 
     return cartProduct;
@@ -265,13 +264,13 @@ function updateStorage(updatedProduct) {
 /**
  * Sets total quantity of items and total price of the cart.
  */
-function setTotals() {
+async function setTotals() {
     const quantityInputs = Array.from(document.querySelectorAll(".itemQuantity"));
     const totalQuantityElement = document.querySelector("#totalQuantity");
     const totalPriceElement = document.querySelector("#totalPrice");
 
     const totalQuantity = calculateTotalQuantity(quantityInputs);
-    const totalPrice = calculateTotalPrice(quantityInputs);
+    const totalPrice = await calculateTotalPrice(quantityInputs);
 
     totalQuantityElement.textContent = totalQuantity.toString();
     totalPriceElement.textContent = totalPrice.toString();
@@ -292,15 +291,17 @@ function calculateTotalQuantity(quantityInputs) {
 /**
  * Calculates the total price of the cart.
  * @param {Array<HTMLInputElement>} quantityInputs - An array of quantity input elements.
- * @return {number} The total price of the cart.
+ * @return {Promise<number>} The total price of the cart.
  */
-function calculateTotalPrice(quantityInputs) {
-    return quantityInputs.reduce((totalPrice, quantityInput) => {
-        const productQuantity = +quantityInput.value;
-        const productPrice = +quantityInput.closest("article").dataset.price;
+async function calculateTotalPrice(quantityInputs) {
+    return quantityInputs.reduce(async (accPromise, quantityInput) => {
+        const totalPrice = await accPromise;
+        const quantity = +quantityInput.value;
+        const { id } = quantityInput.closest("article").dataset;
+        const { price } = await fetchData(`products/${id}`);
 
-        return totalPrice + productQuantity * productPrice;
-    }, 0);
+        return totalPrice + quantity * price;
+    }, Promise.resolve(0));
 }
 
 /**
@@ -419,7 +420,7 @@ async function submitOrderForm(form) {
 
     const { orderId } = await postOrderData({ contact, products });
 
-    /* localStorage.clear(); */
+    localStorage.clear();
     redirectToNewPage("confirmation.html", { orderId });
 }
 
