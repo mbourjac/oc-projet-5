@@ -1,6 +1,7 @@
 import { fetchData } from "./modules/fetch-data.js";
 import { createProductImage } from "./modules/create-product-image.js";
 import { createProductElement } from "./modules/create-product-element.js";
+import { setPageUrl } from "./modules/set-page-url.js";
 
 createDynamicContent();
 
@@ -19,8 +20,9 @@ async function createDynamicContent() {
 function createProductItem(productData) {
     const productItem = document.createElement("a");
     const productArticle = createProductArticle(productData);
+    const { _id: id } = productData;
 
-    productItem.href = `./product.html?id=${productData._id}`;
+    productItem.href = setPageUrl("product.html", { id });
     productItem.append(productArticle);
 
     return productItem;
