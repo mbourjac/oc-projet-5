@@ -167,9 +167,10 @@ function addToStorage(chosenProduct) {
     const matchIndex = getMatchIndex(storedProducts, chosenProduct);
 
     if (matchIndex !== -1) {
-        chosenProduct.quantity += storedProducts[matchIndex].quantity;
+        const storedProduct = storedProducts[matchIndex];
+        const updatedProduct = {...chosenProduct, quantity: chosenProduct.quantity + storedProduct.quantity};
 
-        return replaceMatchedProduct(storedProducts, chosenProduct, matchIndex);
+        return replaceMatchedProduct(storedProducts, updatedProduct, matchIndex);
     }
 
     return [...storedProducts, chosenProduct];
