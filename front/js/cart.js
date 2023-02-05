@@ -404,6 +404,8 @@ function checkValidtyOnSubmit(form, inputs) {
 
         if (isFormValid) {
             submitOrderForm(form);
+        } else {
+            alert("Veuillez corriger les champs indiqués.");
         }
     });
 }
