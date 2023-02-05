@@ -1,5 +1,5 @@
 import { setApiEndpoint } from "./set-api-endpoint.js";
-import { redirectToNewPage } from "./redirect-to-new-page.js";
+import { navigateToPage } from "./navigate-to-page.js";
 
 /**
  * Fetches data from an API endpoint.
@@ -31,7 +31,7 @@ export async function fetchData(resourcePath, options) {
             console.error(error);
         }
 
-        redirectToNewPage("index.html");
+        navigateToPage("index.html");
     }
 }
 

@@ -3,8 +3,8 @@
  * @param {string} page - The name of the new page.
  * @param {Object} [parameters] - An object containing key-value pairs of parameters to be added to the URL.
  */
-export function redirectToNewPage(page, parameters) {
-    const newPageUrl = setNewPageUrl(page, parameters);
+export function navigateToPage(page, parameters) {
+    const newPageUrl = setPageUrl(page, parameters);
 
     window.location.assign(newPageUrl);
 }
@@ -15,7 +15,7 @@ export function redirectToNewPage(page, parameters) {
  * @param {Object} [parameters] - An object containing key-value pairs of parameters to be added to the URL.
  * @returns {URL} The URL of the new page.
  */
-function setNewPageUrl(page, parameters) {
+function setPageUrl(page, parameters) {
     const baseUrl = new URL("/front/html/", window.location.href);
     const newPageUrl = new URL(page, baseUrl);
 

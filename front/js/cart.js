@@ -7,7 +7,7 @@ import { setStorageData } from "./modules/set-storage-data.js";
 import { isSameProduct } from "./modules/is-same-product.js";
 import { getMatchIndex } from "./modules/get-match-index.js";
 import { replaceMatchedProduct } from "./modules/replace-matched-product.js";
-import { redirectToNewPage } from "./modules/redirect-to-new-page.js";
+import { navigateToPage } from "./modules/navigate-to-page.js";
 
 createDynamicContent();
 
@@ -343,7 +343,7 @@ function isCartEmpty(inputs) {
 
             if (storedProducts.length === 0) {
                 alert("Votre panier est vide. Vous allez être redirigé vers la page d'accueil.");
-                redirectToNewPage("index.html");
+                navigateToPage("index.html");
             }
         });
     }
@@ -421,7 +421,7 @@ async function submitOrderForm(form) {
     const { orderId } = await postOrderData({ contact, products });
 
     localStorage.clear();
-    redirectToNewPage("confirmation.html", { orderId });
+    navigateToPage("confirmation.html", { orderId });
 }
 
 /**
