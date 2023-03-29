@@ -1,5 +1,6 @@
 import { setApiEndpoint } from "./set-api-endpoint.js";
 import { navigateToPage } from "./navigate-to-page.js";
+
 /**
  * Fetches data from an API endpoint.
  * @async
@@ -13,24 +14,27 @@ export async function fetchData(resourcePath, options) {
     try {
         const apiEndpoint = setApiEndpoint(resourcePath);
         const response = await fetch(apiEndpoint, options);
+
         if (!response.ok) {
             handleHttpError(response);
         }
+
         const data = await response.json();
+
         return data;
-    }
-    catch (error) {
+    } catch (error) {
         if (error instanceof HttpError) {
             alert(error.message);
             console.error(`${error.name}: status ${error.status}`);
-        }
-        else {
+        } else {
             alert("Désolé, une erreur est survenue.");
             console.error(error);
         }
+
         navigateToPage("index.html");
     }
 }
+
 /**
  * Handles HTTP errors.
  * @param {Object} response - The HTTP response object.
@@ -48,6 +52,7 @@ function handleHttpError(response) {
             throw new HttpError(response.statusText, response.status);
     }
 }
+
 /**
  * HttpError class represents an error that occurs while making an HTTP request.
  * @extends {Error}
@@ -61,6 +66,7 @@ class HttpError extends Error {
         this.status = status;
     }
 }
+
 /**
  * NotFoundError class represents an error that occurs when a resource is not found.
  * @extends {HttpError}
@@ -69,8 +75,10 @@ class NotFoundError extends HttpError {
     constructor() {
         super("Désolé, ce produit est introuvable.", NotFoundError.status);
     }
+
+    static status = 404;
 }
-NotFoundError.status = 404;
+
 /**
  * InternalServerError class represents an error that occurs when a server error is encountered.
  * @extends {HttpError}
@@ -79,5 +87,6 @@ class InternalServorError extends HttpError {
     constructor() {
         super("Désolé, nous rencontrons un problème avec le serveur.", InternalServorError.status);
     }
+
+    static status = 500;
 }
-InternalServorError.status = 500;

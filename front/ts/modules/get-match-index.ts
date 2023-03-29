@@ -1,4 +1,5 @@
 import { isSameProduct } from "./is-same-product.js";
+
 /**
  * Retrieves the index of a matching product in an array of stored products.
  * @param {Array<Object>} storedProducts - The products stored in local storage.

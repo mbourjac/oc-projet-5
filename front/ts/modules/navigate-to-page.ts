@@ -1,4 +1,5 @@
 import { setPageUrl } from "./set-page-url.js";
+
 /**
  * Navigates the user to a specified page with provided parameters.
  * @param {string} page - The name of the page to navigate to.
@@ -6,5 +7,6 @@ import { setPageUrl } from "./set-page-url.js";
  */
 export function navigateToPage(page, parameters) {
     const newPageUrl = setPageUrl(page, parameters);
+
     window.location.assign(newPageUrl);
 }
