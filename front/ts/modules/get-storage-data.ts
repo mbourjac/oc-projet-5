@@ -1,9 +1,9 @@
 export function getStorageData() {
-    const storedProducts = localStorage.getItem("storedProducts");
+	const storedProducts = localStorage.getItem('storedProducts');
 
-    if (storedProducts === null) {
-        return [];
-    }
+	if (storedProducts === null) {
+		return [];
+	}
 
-    return JSON.parse(storedProducts);
+	return JSON.parse(storedProducts);
 }

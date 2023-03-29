@@ -1,5 +1,5 @@
-import { setApiEndpoint } from "./set-api-endpoint.js";
-import { navigateToPage } from "./navigate-to-page.js";
+import { setApiEndpoint } from './set-api-endpoint.js';
+import { navigateToPage } from './navigate-to-page.js';
 export async function fetchData(resourcePath, options) {
     try {
         const apiEndpoint = setApiEndpoint(resourcePath);
@@ -16,10 +16,10 @@ export async function fetchData(resourcePath, options) {
             console.error(`${error.name}: status ${error.status}`);
         }
         else {
-            alert("Désolé, une erreur est survenue.");
+            alert('Désolé, une erreur est survenue.');
             console.error(error);
         }
-        navigateToPage("index.html");
+        navigateToPage('index.html');
     }
 }
 function handleHttpError(response) {
@@ -41,13 +41,13 @@ class HttpError extends Error {
 }
 class NotFoundError extends HttpError {
     constructor() {
-        super("Désolé, ce produit est introuvable.", NotFoundError.status);
+        super('Désolé, ce produit est introuvable.', NotFoundError.status);
     }
 }
 NotFoundError.status = 404;
 class InternalServorError extends HttpError {
     constructor() {
-        super("Désolé, nous rencontrons un problème avec le serveur.", InternalServorError.status);
+        super('Désolé, nous rencontrons un problème avec le serveur.', InternalServorError.status);
     }
 }
 InternalServorError.status = 500;

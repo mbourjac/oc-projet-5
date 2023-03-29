@@ -1,5 +1,5 @@
 export function getUrlParameter(parameter) {
-    const currentUrl = new URL(document.location);
+	const currentUrl = new URL(document.location);
 
-    return currentUrl.searchParams.get(parameter);
+	return currentUrl.searchParams.get(parameter);
 }

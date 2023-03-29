@@ -1,5 +1,5 @@
 export function getStorageData() {
-    const storedProducts = localStorage.getItem("storedProducts");
+    const storedProducts = localStorage.getItem('storedProducts');
     if (storedProducts === null) {
         return [];
     }
