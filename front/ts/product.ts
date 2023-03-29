@@ -60,11 +60,6 @@ function setProductInformation({ name, price, description }) {
     productDescription.textContent = description;
 }
 
-/**
- * Appends option elements to a select element with specific color values.
- * @param {Object} productData - The product data.
- * @param {Array<string>} productData.colors - An array of color values.
- */
 function appendColorOptions({ colors }) {
     const colorsSelect = document.querySelector("#colors");
     const colorOptions = colors.map(createColorOption);
@@ -72,11 +67,6 @@ function appendColorOptions({ colors }) {
     colorsSelect.append(...colorOptions);
 }
 
-/**
- * Creates an option element for a select element.
- * @param {string} color - The color value and text content for the option element.
- * @returns {HTMLOptionElement} - The created option element.
- */
 function createColorOption(color) {
     const colorOption = document.createElement("option");
 
@@ -86,9 +76,6 @@ function createColorOption(color) {
     return colorOption;
 }
 
-/**
- * Handles the change event for the quantity input element.
- */
 function handleQuantityInput() {
     const quantityInput = document.querySelector("#quantity");
 
@@ -102,11 +89,6 @@ function handleQuantityInput() {
     });
 }
 
-/**
- * Handles the click event for the add to cart button.
- * @param {Object} productData - The data of the product.
- * @param {string} productData.name - The name of the product.
- */
 function handleCartButton({ name }) {
     const cartButton = document.querySelector("#addToCart");
 
@@ -126,12 +108,6 @@ function handleCartButton({ name }) {
     });
 }
 
-/**
- * Checks for errors when the user clicks the add to cart button.
- * @param {string} color - The selected color.
- * @param {number} quantity - The selected quantity.
- * @returns {string} Error message if there is an error, otherwise null.
- */
 function checkSubmitErrors(color, quantity) {
     switch (true) {
         case color === "" && quantity === 0:
@@ -145,11 +121,6 @@ function checkSubmitErrors(color, quantity) {
     }
 }
 
-/**
- * Adds a product to the cart.
- * @param {string} color - The color of the product.
- * @param {number} quantity - The quantity of the product.
- */
 function addToCart(color, quantity) {
     const id = getUrlParameter("id");
     const updatedStorage = addToStorage({ id, color, quantity });
@@ -157,11 +128,6 @@ function addToCart(color, quantity) {
     setStorageData(updatedStorage);
 }
 
-/**
- * Adds a product to local storage.
- * @param {Object} chosenProduct - The product to add to local storage.
- * @returns {Array<Object>} - The updated storage data.
- */
 function addToStorage(chosenProduct) {
     const storedProducts = getStorageData();
     const matchIndex = getMatchIndex(storedProducts, chosenProduct);
@@ -176,13 +142,6 @@ function addToStorage(chosenProduct) {
     return [...storedProducts, chosenProduct];
 }
 
-/**
-* Alerts a message with the added product name, color, and quantity.
-* @param {Object} productData - The data for the added product.
-* @param {string} productData.name - The name of the added product.
-* @param {string} productData.color - The color of the added product.
-* @param {number} productData.quantity - The quantity of the added product.
-*/
 function alertAddedProduct({ name, color, quantity }) {
     const addedMessage = `Le ${name} ${color} a bien été ajouté au panier en ${quantity} exemplaire.`;
 
