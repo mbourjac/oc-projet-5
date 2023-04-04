@@ -1,11 +1,11 @@
 export function createProductElement(element, content, className) {
-	const productElement = document.createElement(element);
+  const productElement = document.createElement(element);
 
-	if (className) {
-		productElement.classList.add(className);
-	}
+  if (className) {
+    productElement.classList.add(className);
+  }
 
-	productElement.textContent = content;
+  productElement.textContent = content;
 
-	return productElement;
+  return productElement;
 }
