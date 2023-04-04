@@ -1,3 +1,5 @@
+import '../css/style.css';
+import '../css/product.css';
 import { fetchData } from './modules/fetch-data.js';
 import { getUrlParameter } from './modules/get-url-parameter.js';
 import { createProductImage } from './modules/create-product-image.js';

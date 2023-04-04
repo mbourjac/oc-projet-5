@@ -1,3 +1,5 @@
+import '../css/style.css';
+import '../css/confirmation.css';
 import { getUrlParameter } from './modules/get-url-parameter.js';
 
 displayOrderId();

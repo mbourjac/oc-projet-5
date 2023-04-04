@@ -1,3 +1,5 @@
+import '../css/style.css';
+import '../css/cart.css';
 import { fetchData } from './modules/fetch-data.js';
 import { createProductImage } from './modules/create-product-image.js';
 import { createProductElement } from './modules/create-product-element.js';
