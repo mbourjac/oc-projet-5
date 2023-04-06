@@ -1,4 +1,4 @@
-export function alertQuantityError(input) {
+export function alertQuantityError(input: HTMLInputElement): void {
   switch (true) {
     case input.validity.valueMissing:
       alert('Veuillez renseigner la quantité.');
