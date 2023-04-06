@@ -1,8 +1,10 @@
+import { StorageProduct } from '../interfaces/storage-product';
+
 export function replaceMatchedProduct(
-  storedProducts,
-  updatedProduct,
-  matchIndex
-) {
+  storedProducts: StorageProduct[],
+  updatedProduct: StorageProduct,
+  matchIndex: number
+): StorageProduct[] {
   return [
     ...storedProducts.slice(0, matchIndex),
     updatedProduct,
